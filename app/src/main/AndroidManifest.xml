@@ -268,7 +268,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.RegActivity"></activity>
+        <activity
+            android:name=".activities.RegActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activities.RegActivity2"></activity>
     </application>
 
 </manifest>

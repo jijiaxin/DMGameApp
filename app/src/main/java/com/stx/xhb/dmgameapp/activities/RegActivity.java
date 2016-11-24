@@ -88,45 +88,47 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptSignin();
-                    return true;
-                }
-                return false;
-            }
-        });
-        mPicVerifyCode =(EditText) findViewById(R.id.reg_pic_verify_code);
-        mEmailVerifyCode = (EditText) findViewById(R.id.reg_email_verify_code);
-        mSendEmailVerify =(TextView) findViewById(R.id.reg_send_email_verify);
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+//                    attemptSignin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//        mPicVerifyCode =(EditText) findViewById(R.id.reg_pic_verify_code);
+//        mEmailVerifyCode = (EditText) findViewById(R.id.reg_email_verify_code);
+//        mSendEmailVerify =(TextView) findViewById(R.id.reg_send_email_verify);
 
-        mSendEmailVerify.setOnClickListener(new View.OnClickListener(){ //发送邮件验证码
-            @Override
-            public void onClick(View view) {
-                getEmailVerify();
-            }
-        });
-
+//        mSendEmailVerify.setOnClickListener(new View.OnClickListener(){ //发送邮件验证码
+//            @Override
+//            public void onClick(View view) {
+//                getEmailVerify();
+//            }
+//        });
+//
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptSignin();
+//                attemptSignin();
+                startActivity(new Intent(RegActivity.this, RegActivity2.class));
             }
         });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+//
+//        mLoginFormView = findViewById(R.id.login_form);
+//        mProgressView = findViewById(R.id.login_progress);
         tv_login = (TextView) findViewById(R.id.tv_reg_tip);
 
 
         tv_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(RegActivity.this, LoginActivity.class);
-                startActivity(intent);
+//                Intent intent=new Intent(RegActivity.this, LoginActivity.class);
+//                startActivity(intent);
+                finish();
             }
         });
 
