@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">天维新闻</string>
+    <string name="tab_my">我</string>
+
+    <string name="image_desc">image_desc</string>
+    <string name="verify_code_hint">请输入验证码</string>
+    <string name="get_verify_code">获取验证码</string>
+    <string name="title_login">登录</string>
+    <string name="login_username_edit_hint">用户名|手机号|邮箱</string>
+    <string name="login_password_edit_hint">请输入密码</string>
+    <string name="login_register_text">快速注册 立享优惠</string>
+    <string name="login_register_text_hint">还不是天维新闻网用户？</string>
+    <string name="login_forget_password_text">忘记密码</string>
+    <string name="register_submit">提交注册</string>
+    <string name="register_email_string">Email</string>
+    <string name="register_email_hint">输入您注册时填写的地址</string>
+    <string name="register_name_string">用户名</string>
+    <string name="register_name_hint">用户名不能以数字开头</string>
+    <string name="register_password_string">登录密码</string>
+    <string name="register_password_hint">密码长度必须为8—16个字符</string>
+    <string name="sure_password_hint">请再次输入登录密码</string>
+    <string name="register_pw_ack_hint">请再输入登录密码</string>
+
+    <!-- 提示 -->
+    <string name="tips_womai">温馨提示</string>
+
+    <string name="bingding_phone_hint">请输入手机号</string>
+    <string name="title_activity_login">登录</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">邮箱</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录注册</string>
+    <string name="action_sign_in_short">登录</string>
+    <string name="error_invalid_email">邮箱格式不正确</string>
+    <string name="error_invalid_password">密码太短</string>
+    <string name="error_incorrect_password">密码错误</string>
+    <string name="error_field_required">不要有空缺项</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="action_piccode">输入图片验证码</string>
+    <string name="prompt_piccode">邮件验证码</string>
+    <string name="prompt_username">用户名</string>
+    <string name="action_emailcode">输入邮箱收到的验证码</string>
+    <string name="prompt_emailcode">邮件验证码</string>
+    <string name="reg_tip">注册帐户</string>
+    <string name="login_tip">去登录</string>
+</resources>

@@ -1,0 +1,14 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="custom_avloading_height">64dp</dimen>
+
+    <!-- UI通用文字大小 -->
+    <dimen name="txt_size_first">17sp</dimen>
+    <dimen name="txt_size_second">15sp</dimen>
+
+    <!-- 小买 item 宽度 -->
+    <dimen name="index_item_img_width">105dp</dimen>
+    <dimen name="view_login_hei">40dp</dimen>
+</resources>

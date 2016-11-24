@@ -1,0 +1,147 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.stx.xhb.dmgameapp.activities.LoginActivity">
+
+<!-- 标题 -->
+<include layout="@layout/title_layout"></include>
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="16dp"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+android:id="@+id/linear_myreg">
+<!-- Login progress -->
+<ProgressBar
+    android:id="@+id/login_progress"
+    style="?android:attr/progressBarStyleLarge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:visibility="gone" />
+
+<ScrollView
+    android:id="@+id/login_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/email_login_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <AutoCompleteTextView
+            android:id="@+id/reg_username"
+            android:background="@drawable/bg_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_gray"
+            android:hint="@string/prompt_username"
+            android:text="hasty2016"
+            android:inputType="textShortMessage"
+            android:maxLines="1"
+            android:singleLine="true" />
+        <AutoCompleteTextView
+            android:id="@+id/email"
+            android:background="@drawable/bg_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_gray"
+            android:hint="@string/prompt_email"
+            android:text="pingwang@sina.cn"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/password"
+            android:background="@drawable/bg_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_gray"
+            android:hint="@string/prompt_password"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:text="a790401"
+            android:singleLine="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/reg_pic_verify_code"
+                android:background="@drawable/bg_edittext"
+                android:layout_width="120dip"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray"
+                android:hint="@string/prompt_piccode"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_piccode"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />
+            <ImageView
+                android:id="@+id/reg_verify_pic"
+                android:layout_width="100dip"
+                android:layout_height="30dip"
+                android:layout_gravity="right"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/reg_email_verify_code"
+                android:background="@drawable/bg_edittext"
+                android:layout_width="120dip"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray"
+                android:hint="@string/prompt_emailcode"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_emailcode"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true" />
+            <TextView
+                android:id="@+id/reg_send_email_verify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_black"
+                android:text = "点击发送邮箱验证码"
+                />
+        </LinearLayout>
+        <Button
+            android:id="@+id/email_sign_in_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/action_sign_in"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_reg_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/login_tip"
+            android:textSize="16sp"
+            android:layout_gravity="right" />
+
+    </LinearLayout>
+</ScrollView>
+</LinearLayout>
+</LinearLayout>
