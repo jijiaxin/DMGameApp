@@ -39,17 +39,47 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <AutoCompleteTextView
-                android:id="@+id/email"
-                android:background="@drawable/bg_edittext"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/txt_size_first"
+                    android:textColor="@color/text_black"
+                    android:text="用户名"/>
+
+                <AutoCompleteTextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_gray"
+                    android:hint="@string/prompt_email"
+                    android:text="hasty@sina.cn"
+                    android:textSize="@dimen/txt_size_first"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_gray"
-                android:hint="@string/prompt_email"
-                android:text="hasty@sina.cn"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:textSize="@dimen/txt_size_first"
+                android:textColor="@color/text_black"
+                android:text="密码"/>
 
             <EditText
                 android:id="@+id/password"
@@ -57,13 +87,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_gray"
-                android:hint="@string/prompt_password"
                 android:imeActionId="@+id/login"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
+                android:textSize="@dimen/txt_size_first"
+                android:layout_marginLeft="10dp"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/email_sign_in_button"
@@ -71,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="@color/colorBackground"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
