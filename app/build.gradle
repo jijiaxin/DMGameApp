@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.stx.xhb.dmgameapp"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 8
+        versionName "2.4"
+        multiDexEnabled true
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86','x86_64','mips','mips64'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : "com.stx.xhb.dmgameapp",
+                JPUSH_APPKEY : "1d606486b7fd03d82a683ecd", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        disable "ResourceType"
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.+'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.viewpagerindicator:library:2.4.1@aar'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'org.xutils:xutils:3.3.12'
+    compile 'com.github.castorflex.smoothprogressbar:library:1.1.0'
+    compile 'com.github.shell-software:fab:1.1.2'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.android.support:cardview-v7:23.2.1'
+    compile 'com.android.support:design:23.2.0'
+    compile 'com.wang.avi:library:1.0.1'
+    compile 'com.classic.common:multiple-status-view:1.2'
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
+    compile 'cn.finalteam.loadingviewfinal:loading-more-view:1.0.1'
+    compile 'cn.finalteam.loadingviewfinal:ultra-pull-to-refresh:1.0.1'
+    compile 'cn.jiguang:jpush:2.1.9'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+}
