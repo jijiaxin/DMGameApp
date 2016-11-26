@@ -29,6 +29,7 @@ public class HttpAdress {
 
     //userlogin && register
     public static final String LOGIN_URL ="https://passportforapp.skykiwi.com/v2/login/logging.do?username=%s&password=%s";
+    public static final String USER_URL = "https://passportforapp.skykiwi.com/v2/member/self.do?uid=%s&token=%s";
 
     public static final String REG_INIT_URL="https://passportforapp.skykiwi.com/v2/register/init.do?v=1.0&c=Android&cv=4.4&device_id=123456781234";
     public static final String REG_PIC_VERIFY_URL="https://passportforapp.skykiwi.com/v2/register/picVerifycode.do?rndUid=%s&v=1.0&c=Android&cv=4.4&device_id=123456781234";

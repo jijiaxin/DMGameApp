@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     android:gravity="center"
     android:minHeight="100dp">
     <com.wang.avi.AVLoadingIndicatorView
@@ -12,6 +13,7 @@
         android:layout_height="@dimen/custom_avloading_height"
         android:layout_centerInParent="true"
         android:visibility="visible"
+        android:id="@+id/indicatorView"
         app:indicator="BallClipRotateMultiple"
         app:indicator_color="@color/colorAccent" />
 </LinearLayout>

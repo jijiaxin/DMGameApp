@@ -40,7 +40,9 @@ import com.stx.xhb.dmgameapp.entity.Usertoken;
 import com.stx.xhb.dmgameapp.entity.ValidateEntity;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
+import com.stx.xhb.dmgameapp.view.LoadingDialog;
 
+import org.json.JSONException;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -59,7 +61,6 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
     private EditText mPicVerifyCode;
     private EditText mEmailVerifyCode;
     private AutoCompleteTextView mUserNameView;
@@ -115,7 +116,6 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
         });
 //
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
         tv_login = (TextView) findViewById(R.id.tv_reg_tip);
 
 
@@ -245,7 +245,12 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
                         intent.putExtra("email", email);
                         startActivity(intent);
                     }else{
-//                        Toast.makeText(RegActivity.this, validateEntity.getErrors().getUsername(), Toast.LENGTH_LONG).show();
+                        try {
+                            String erroTip = ValidateEntity.getErroMsg(result);
+                            Toast.makeText(RegActivity.this, erroTip, Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         getVerifyPic();
                     }
 //                    if (validateEntity != null && ((Usertoken.Results) usernet.getData()) != null) {
@@ -397,39 +402,11 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                }
-//            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (show){
+            LoadingDialog.create(this);
+        }else{
+            LoadingDialog.cancel();
         }
     }
 

@@ -52,4 +52,11 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
     </style>
+
+    <!-- dialog 样式 -->
+    <style name="custom_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 </resources>

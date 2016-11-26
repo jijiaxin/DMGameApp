@@ -16,17 +16,22 @@ import android.widget.TextView;
 import android.widget.ImageView;
 
 import com.classic.common.MultipleStatusView;
+import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.activities.GameDetailActivity;
 import com.stx.xhb.dmgameapp.activities.LoginActivity;
 import com.stx.xhb.dmgameapp.activities.SettingActivity;
 import com.stx.xhb.dmgameapp.adapter.GridViewAdapter;
 import com.stx.xhb.dmgameapp.entity.GameListItem;
+import com.stx.xhb.dmgameapp.entity.LoginEntity;
+import com.stx.xhb.dmgameapp.entity.UserEntity;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.utils.NetConnectedUtils;
+import com.stx.xhb.dmgameapp.utils.UserUtils;
 
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -130,5 +135,51 @@ public class MyFragment extends Fragment{
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.e("myfragment onresume");
+
+        getUserInfo();
+    }
+
+    /**
+     * 更新用户信息
+     */
+    private void getUserInfo(){
+        LogUtil.e("getuserinfo");
+        LoginEntity loginEntity = UserUtils.getLoginInfo(getActivity());
+        if (loginEntity != null && loginEntity.getData() != null) {
+            String url = String.format(HttpAdress.USER_URL, loginEntity.getData().getUid(), loginEntity.getData().getToken());
+            x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
+
+                @Override
+                public void onSuccess(String result) {
+                    LogUtil.e("getuserinfo: " + result);
+                    String json = new String(result);
+                    UserEntity userEntity = new Gson().fromJson(json, UserEntity.class);
+                    if (userEntity.getSignal() == 1){
+                        UserUtils.saveUserInfo(getActivity(), json);
+                    }
+                }
+
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+
+                }
+
+                @Override
+                public void onCancelled(CancelledException cex) {
+
+                }
+
+                @Override
+                public void onFinished() {
+
+                }
+            });
+        }
     }
 }

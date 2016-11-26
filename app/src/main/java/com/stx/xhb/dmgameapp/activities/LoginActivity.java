@@ -28,14 +28,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
+import com.stx.xhb.dmgameapp.entity.LoginEntity;
 import com.stx.xhb.dmgameapp.entity.Usernet;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
+import com.stx.xhb.dmgameapp.utils.UserUtils;
+import com.stx.xhb.dmgameapp.view.LoadingDialog;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -401,19 +405,26 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         private void login() {
+            LoadingDialog.create(LoginActivity.this);
             String url = String.format(HttpAdress.LOGIN_URL, mEmail, mPassword);
             //下载网络数据
             x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
                     try {
+                        LoadingDialog.cancel();
                         String json = new String(result);
                         Log.i("login ret:", json);
                         //json解析
-                        Usernet usernet = new Gson().fromJson(JsonUtils.removeBOM(json), Usernet.class);
-                        Log.i("usernet:", usernet.toString());
-                        int signal = usernet.getSignal();//响应状态码
-
+                        LoginEntity loginEntity = new Gson().fromJson(JsonUtils.removeBOM(json), LoginEntity.class);
+                        int signal = loginEntity.getSignal();//响应状态码
+                        if (signal == 1){
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG);
+                            UserUtils.saveLoginInfo(LoginActivity.this, json);
+                            finish();
+                        }else{
+                            Toast.makeText(LoginActivity.this, loginEntity.getMsg(), Toast.LENGTH_LONG);
+                        }
                     }
                     catch(Exception ex){
                         Log.i("login ret error:", ex.getMessage());
@@ -423,16 +434,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
                 @Override
                 public void onError(Throwable ex, boolean isOnCallback) {
+                    LoadingDialog.cancel();
 
                 }
 
                 @Override
                 public void onCancelled(CancelledException cex) {
+                    LoadingDialog.cancel();
 
                 }
 
                 @Override
                 public void onFinished() {
+                    LoadingDialog.cancel();
 
                 }
             });

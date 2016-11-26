@@ -9,10 +9,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
+import com.stx.xhb.dmgameapp.entity.ValidateEntity;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
+import com.stx.xhb.dmgameapp.utils.JsonUtils;
+import com.stx.xhb.dmgameapp.view.LoadingDialog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -22,7 +29,7 @@ public class RegActivity2 extends Activity {
     String email = "";
 
     private EditText pwd1, pwd2;
-    private AutoCompleteTextView validate;
+    private EditText validate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +49,7 @@ public class RegActivity2 extends Activity {
     private void initView(){
         pwd1 = (EditText)findViewById(R.id.reg2_pwd);
         pwd2 = (EditText)findViewById(R.id.reg2_pwd2);
-        validate = (AutoCompleteTextView) findViewById(R.id.validate);
+        validate = (EditText) findViewById(R.id.validate);
         TextView tv_title = (TextView) findViewById(R.id.title);
         tv_title.setText(this.getString(R.string.reg_tip));
 
@@ -71,6 +78,7 @@ public class RegActivity2 extends Activity {
     }
 
     private void reg(){
+        LoadingDialog.create(this);
         String pwd = pwd1.getText().toString();
         String verifyCode = validate.getText().toString();
         String url = String.format(HttpAdress.REG_URL,verifyCode, email, userName, pwd);
@@ -78,21 +86,38 @@ public class RegActivity2 extends Activity {
 
             @Override
             public void onSuccess(String result) {
-                Log.e("reg", result);
+                LoadingDialog.cancel();
+                String json = new String(result);
+                LogUtil.e(json);
+                ValidateEntity validateEntity = new Gson().fromJson(JsonUtils.removeBOM(json), ValidateEntity.class);
+                if (validateEntity.getSignal() == 1){
+                    Toast.makeText(RegActivity2.this, "注册成功", Toast.LENGTH_LONG).show();
+                }else{
+                    try {
+                        String erroTip = ValidateEntity.getErroMsg(result);
+                        Toast.makeText(RegActivity2.this, erroTip, Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                LoadingDialog.cancel();
 
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
+                LoadingDialog.cancel();
 
             }
 
             @Override
             public void onFinished() {
+                LoadingDialog.cancel();
 
             }
         });
