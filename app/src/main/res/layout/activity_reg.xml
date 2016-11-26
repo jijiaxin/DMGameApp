@@ -106,7 +106,7 @@ android:id="@+id/linear_myreg">
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:hint="请输入邮箱"
                     android:singleLine="true"
@@ -132,8 +132,8 @@ android:id="@+id/linear_myreg">
 
                 <ImageView
                     android:id="@+id/reg_verify_pic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
@@ -147,7 +147,7 @@ android:id="@+id/linear_myreg">
                     android:text="验证码"/>
 
                 <AutoCompleteTextView
-                    android:id="@+id/validate"
+                    android:id="@+id/reg_pic_verify_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -155,7 +155,7 @@ android:id="@+id/linear_myreg">
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:layout_toRightOf="@id/text_validate"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="number"
                     android:hint="请输入验证码"
                     android:maxLines="1"
                     android:singleLine="true"

@@ -8,7 +8,7 @@ import java.util.List;
 public class Usernet {
     private int signal;
     private String msg;
-   // private String errors;
+    private String errors;
     private List<Results> data;
 
     public int getSignal() {
@@ -25,12 +25,12 @@ public class Usernet {
         this.msg = msg;
     }
 
-   /* public String getErrors() {
+    public String getErrors() {
         return errors;
     }
     public void setErrors(String errors) {
         this.errors = errors;
-    }*/
+    }
 
     public List<Results> getData() {
         return data;

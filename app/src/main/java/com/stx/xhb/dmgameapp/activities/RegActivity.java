@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -98,7 +99,7 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
 //                return false;
 //            }
 //        });
-//        mPicVerifyCode =(EditText) findViewById(R.id.reg_pic_verify_code);
+        mPicVerifyCode =(EditText) findViewById(R.id.reg_pic_verify_code);
 //        mEmailVerifyCode = (EditText) findViewById(R.id.reg_email_verify_code);
 //        mSendEmailVerify =(TextView) findViewById(R.id.reg_send_email_verify);
 
@@ -113,8 +114,8 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                attemptSignin();
-                startActivity(new Intent(RegActivity.this, RegActivity2.class));
+                getEmailVerify();
+//                startActivity(new Intent(RegActivity.this, RegActivity2.class));
             }
         });
 //
@@ -243,6 +244,8 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
                     Log.i("news getSessionToken:", json);
                     Usernet usernet = new Gson().fromJson(JsonUtils.removeBOM(json), Usernet.class);
                     Log.i("news usernet:", usernet.toString());
+                    if (usernet.getSignal() == 100081){
+                    }
                     if (usernet != null && ((Usertoken.Results) usernet.getData()) != null) {
                         reg_token = ((Usertoken.Results) usernet.getData()).getGUID();
                     }
@@ -337,7 +340,7 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
 
         // Reset errors.
         mEmailView.setError(null);
-        mPasswordView.setError(null);
+//        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
