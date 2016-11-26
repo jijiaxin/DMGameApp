@@ -2,19 +2,99 @@ package com.stx.xhb.dmgameapp.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.stx.xhb.dmgameapp.R;
+import com.stx.xhb.dmgameapp.utils.HttpAdress;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 public class RegActivity2 extends Activity {
+
+    String userName = "";
+    String email = "";
+
+    private EditText pwd1, pwd2;
+    private AutoCompleteTextView validate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg2);
 
+        initIntent();
+        initView();
+    }
 
+    private void initIntent(){
+        userName = getIntent().getStringExtra("username");
+        email = getIntent().getStringExtra("email");
+
+    }
+
+    private void initView(){
+        pwd1 = (EditText)findViewById(R.id.reg2_pwd);
+        pwd2 = (EditText)findViewById(R.id.reg2_pwd2);
+        validate = (AutoCompleteTextView) findViewById(R.id.validate);
         TextView tv_title = (TextView) findViewById(R.id.title);
         tv_title.setText(this.getString(R.string.reg_tip));
+
+        findViewById(R.id.email_sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (varifyPwd()){
+                    reg();
+                }
+            }
+        });
+    }
+
+    /**
+     * 验证密码
+     */
+    private boolean varifyPwd(){
+        String pwdStr1 = pwd1.getText().toString();
+        String pwdStr2 = pwd2.getText().toString();
+        if (pwdStr1.equals(pwdStr2)){
+            return true;
+        }else{
+            Toast.makeText(this, "两次输入的密码不一样，请重新输入", Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
+    private void reg(){
+        String pwd = pwd1.getText().toString();
+        String verifyCode = validate.getText().toString();
+        String url = String.format(HttpAdress.REG_URL,verifyCode, email, userName, pwd);
+        x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+                Log.e("reg", result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 }

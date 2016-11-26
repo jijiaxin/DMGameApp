@@ -37,6 +37,7 @@ import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.entity.Usernet;
 import com.stx.xhb.dmgameapp.entity.Usertoken;
+import com.stx.xhb.dmgameapp.entity.ValidateEntity;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
 
@@ -66,12 +67,6 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
     private View mLoginFormView;
     private TextView tv_login; //登录
 
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
@@ -119,8 +114,8 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
             }
         });
 //
-//        mLoginFormView = findViewById(R.id.login_form);
-//        mProgressView = findViewById(R.id.login_progress);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
         tv_login = (TextView) findViewById(R.id.tv_reg_tip);
 
 
@@ -140,14 +135,11 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
         iv_verify_pic.setOnClickListener(new View.OnClickListener() { //点击图片验证码，重新获取
             @Override
             public void onClick(View v) {
-                RegActivity.this.getVerifyPic();
+                getVerifyPic();
             }
         });
         reg_token = "";
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         getVerifyPic();
 
@@ -230,25 +222,35 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
         });*/
     }
 
-    private void sendEmailVerify(String email, String username, String pic_code ){ //发送图片验证码
+    private void sendEmailVerify(final String email, final String username, String pic_code ){ //发送图片验证码
         String url = String.format(HttpAdress.REG_EMAIL_VERIFY_URL, email, username, reg_token, pic_code);
         Log.i("news sendEmail url:", url);
+        showProgress(true);
         x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 try {
+                    showProgress(false);
                     //String nulldata = "\"data\":[]";
                     //String objectdata = "\"data\":{}";
                     String json = new String(result);
                     //json.replaceAll(nulldata, objectdata);
                     Log.i("news getSessionToken:", json);
-                    Usernet usernet = new Gson().fromJson(JsonUtils.removeBOM(json), Usernet.class);
-                    Log.i("news usernet:", usernet.toString());
-                    if (usernet.getSignal() == 100081){
+                    ValidateEntity validateEntity = new Gson().fromJson(JsonUtils.removeBOM(json), ValidateEntity.class);
+                    Log.i("news usernet:", validateEntity.toString());
+                    if (validateEntity.getSignal() == 1){
+                        Toast.makeText(RegActivity.this, "验证码发送成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RegActivity.this, RegActivity2.class);
+                        intent.putExtra("username", username);
+                        intent.putExtra("email", email);
+                        startActivity(intent);
+                    }else{
+//                        Toast.makeText(RegActivity.this, validateEntity.getErrors().getUsername(), Toast.LENGTH_LONG).show();
+                        getVerifyPic();
                     }
-                    if (usernet != null && ((Usertoken.Results) usernet.getData()) != null) {
-                        reg_token = ((Usertoken.Results) usernet.getData()).getGUID();
-                    }
+//                    if (validateEntity != null && ((Usertoken.Results) usernet.getData()) != null) {
+//                        reg_token = ((Usertoken.Results) usernet.getData()).getGUID();
+//                    }
                 }
                 catch(Exception ex){
                     Log.i("news getSession error:", ex.getMessage());
@@ -258,16 +260,19 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                showProgress(false);
 
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
+                showProgress(false);
 
             }
 
             @Override
             public void onFinished() {
+                showProgress(false);
 
             }
         });
@@ -403,14 +408,14 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
