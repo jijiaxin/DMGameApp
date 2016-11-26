@@ -146,7 +146,7 @@
                             android:textColor="@color/text_black"
                             android:text="验证码"/>
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/validate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

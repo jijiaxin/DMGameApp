@@ -13,9 +13,8 @@ import android.widget.RadioGroup;
 import com.stx.xhb.dmgameapp.adapter.MainFragmentPageAdapter;
 import com.stx.xhb.dmgameapp.fragment.ArticleFragment;
 import com.stx.xhb.dmgameapp.fragment.ForumFragment;
-import com.stx.xhb.dmgameapp.fragment.GameFragment;
-import com.stx.xhb.dmgameapp.fragment.VideoFragment;
 import com.stx.xhb.dmgameapp.fragment.MyFragment;
+import com.stx.xhb.dmgameapp.fragment.VideoFragment;
 import com.stx.xhb.dmgameapp.utils.SystemBarTintManager;
 import com.stx.xhb.dmgameapp.view.TipsToast;
 import com.umeng.analytics.MobclickAgent;
@@ -80,7 +79,7 @@ public class MainActivity extends FragmentActivity {
     private void initData() {
         ArticleFragment airticle_fragemnt = new ArticleFragment();
         ForumFragment forum_Fragment = new ForumFragment();
-        GameFragment game_Fragment = new GameFragment();
+//        GameFragment game_Fragment = new GameFragment();
         MyFragment my_Fragment = new MyFragment();
         VideoFragment video_Fragment = new VideoFragment();
         fragemnts.add(airticle_fragemnt);//文章
