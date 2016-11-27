@@ -3,31 +3,21 @@ package com.stx.xhb.dmgameapp.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ImageView;
 
-import com.classic.common.MultipleStatusView;
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
-import com.stx.xhb.dmgameapp.activities.GameDetailActivity;
 import com.stx.xhb.dmgameapp.activities.LoginActivity;
-import com.stx.xhb.dmgameapp.activities.SettingActivity;
-import com.stx.xhb.dmgameapp.adapter.GridViewAdapter;
-import com.stx.xhb.dmgameapp.entity.GameListItem;
 import com.stx.xhb.dmgameapp.entity.LoginEntity;
 import com.stx.xhb.dmgameapp.entity.UserEntity;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
-import com.stx.xhb.dmgameapp.utils.JsonUtils;
-import com.stx.xhb.dmgameapp.utils.NetConnectedUtils;
 import com.stx.xhb.dmgameapp.utils.UserUtils;
 
 import org.xutils.common.Callback;
@@ -35,16 +25,9 @@ import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.finalteam.loadingviewfinal.GridViewFinal;
-import cn.finalteam.loadingviewfinal.OnDefaultRefreshListener;
-import cn.finalteam.loadingviewfinal.OnLoadMoreListener;
-import cn.finalteam.loadingviewfinal.PtrClassicFrameLayout;
-import cn.finalteam.loadingviewfinal.PtrFrameLayout;
+
+import static com.stx.xhb.dmgameapp.R.id.iv_portrait_unlogin_cover;
 
 /**
  * Created by hasty on 16/11/3.
@@ -54,6 +37,7 @@ public class MyFragment extends Fragment{
     private Spinner sp;
     private View view_myreg;
     private ImageView iv_login;
+    private TextView nameTipTv;
     //游戏类型集合
     private static final String[] GAME_NAME = new String[]{
             "游戏", "动作", "射击", "角色扮演", "养成", "益智", "即时策略", "策略", "体育", "模拟经营", "赛车", "冒险"
@@ -69,7 +53,7 @@ public class MyFragment extends Fragment{
         view = inflater.inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this, view);
         initView();
-        setLstener();
+        setListener();
         setAdapter();
         //setSwipeRefreshInfo();
         return view;
@@ -80,12 +64,13 @@ public class MyFragment extends Fragment{
     private void initView() {
         //隐藏toolbar menu控件
         ImageButton main_action_menu = (ImageButton) view.findViewById(R.id.main_action_menu);
+        nameTipTv = (TextView) view.findViewById(R.id.name_tip);
         main_action_menu.setVisibility(View.GONE);
         TextView tv_title = (TextView) view.findViewById(R.id.title);
         tv_title.setText(this.getString(R.string.tab_my));
-        iv_login = (ImageView) view.findViewById(R.id.iv_portrait_unlogin_cover);
+        iv_login = (ImageView) view.findViewById(iv_portrait_unlogin_cover);
         sp = (Spinner) view.findViewById(R.id.game_spinner);
-        view_myreg = view.findViewById(R.id.linear_myreg);
+//        view_myreg = view.findViewById(R.id.linear_myreg);
         //game_grid = (GridViewFinal) view.findViewById(R.id.content_view);
     }
 
@@ -101,30 +86,10 @@ public class MyFragment extends Fragment{
     }
 
     //设置事件监听
-    private void setLstener() {
-        //spinner的点击事件
-        //sp.setOnItemSelectedListener(this);
-        //Gridview的点击事件
-        //game_grid.setOnItemClickListener(this);
-        //点击重试
-        /*multiplestatusview.setOnRetryClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadData(1, typeid);
-            }
-        });*/
+    private void setListener() {
 
         iv_login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int i = 0;
-                Intent intent=new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        view_myreg.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int i = 0;
                 Intent intent=new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
@@ -162,7 +127,18 @@ public class MyFragment extends Fragment{
                     UserEntity userEntity = new Gson().fromJson(json, UserEntity.class);
                     if (userEntity.getSignal() == 1){
                         UserUtils.saveUserInfo(getActivity(), json);
+
+                        nameTipTv.setText(userEntity.getData().getUsername());
+                        // 用户小头像地址
+                        UserEntity.DataEntity.AvatarEntity avatarEntity = userEntity.getData().getAvatar();
+                        String url = avatarEntity.getPrefix()+avatarEntity.getDir()+
+                                avatarEntity.getName()+avatarEntity.getNamePostfix()+
+                                "small."+avatarEntity.getExt();
+                        LogUtil.e("getuserinfo+url  " + url);
+
+                        x.image().bind(iv_login,url);
                     }
+
                 }
 
                 @Override
