@@ -39,6 +39,7 @@ import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.utils.UserUtils;
 import com.stx.xhb.dmgameapp.view.LoadingDialog;
 
+import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -361,7 +362,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                     try {
                         String json = new String(result);
                         Log.i("login ret:", json);
-                        //json解析
+                        // 此处逻辑主要应对服务器登录成功是data是对象，失败时候data变成数组，不一致的缺陷
+                        JSONObject jsonObject = new JSONObject(json);
+                        int signalTip = jsonObject.getInt("signal");
+                        if(signalTip != 1){
+                            String msg = jsonObject.getString("msg");
+                            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        //json解析  正常逻辑
                         LoginEntity loginEntity = new Gson().fromJson(JsonUtils.removeBOM(json), LoginEntity.class);
                         int signal = loginEntity.getSignal();//响应状态码
                         if (signal == 1) {

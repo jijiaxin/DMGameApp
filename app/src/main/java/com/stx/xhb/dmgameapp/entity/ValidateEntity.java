@@ -1,15 +1,10 @@
 package com.stx.xhb.dmgameapp.entity;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by pkxutao on 2016/11/26.
@@ -85,7 +80,6 @@ public class ValidateEntity implements Serializable{
                 return erro.getString(keys.next()).toString();
             }
         }
-
         return null;
     }
 }
