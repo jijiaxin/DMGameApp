@@ -77,6 +77,24 @@ public class ToastUtil
 	 * 自定义Toast显示布局
 	 * @param context 上下文
 	 * @param resId   布局
+	 */
+	public static void show(Context context, int resId,int time) {
+
+		try {
+			if (TextUtils.isEmpty(context.getString(resId))) {
+				return;
+			}
+			initToast(context, resId,time);
+			toast.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 自定义Toast显示布局
+	 * @param context 上下文
+	 * @param resId   布局
      */
 	public static void show(Context context, int resId) {
 
@@ -138,6 +156,14 @@ public class ToastUtil
 		initToast(context, context.getString(msgRes));
 	}
 
+	/**
+	 * 初始化
+	 * @param context
+	 * @param msgRes
+	 */
+	private static void initToast(Context context, int msgRes, int time) {
+		initToast(context, context.getString(msgRes),time);
+	}
 	/**
 	 * 初始化自定义Toast
 	 *

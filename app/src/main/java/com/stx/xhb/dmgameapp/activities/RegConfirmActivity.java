@@ -78,7 +78,7 @@ public class RegConfirmActivity extends BaseActivity {
         if (pwdStr1.equals(pwdStr2)){
             return true;
         }else{
-            Toast.makeText(this, "两次输入的密码不一样，请重新输入", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getApplicationContext(), "两次输入的密码不一样，请重新输入", Toast.LENGTH_LONG).show();
             return false;
         }
     }
@@ -97,14 +97,14 @@ public class RegConfirmActivity extends BaseActivity {
                 LogUtil.e(json);
                 ValidateEntity validateEntity = new Gson().fromJson(JsonUtils.removeBOM(json), ValidateEntity.class);
                 if (validateEntity.getSignal() == 1){
-                    Toast.makeText(RegConfirmActivity.this, "注册成功", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegConfirmActivity.this.getApplicationContext(), "注册成功", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(RegConfirmActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }else{
                     try {
                         String errorTip = ValidateEntity.getErroMsg(result);
-                        Toast.makeText(RegConfirmActivity.this, errorTip, Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegConfirmActivity.this.getApplicationContext(), errorTip, Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

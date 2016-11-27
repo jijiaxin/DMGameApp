@@ -14,7 +14,7 @@
     <!--Tabindicator的自定义style-->
     <style name="StyledIndicators" parent="@android:style/Theme.Holo.Light.NoActionBar">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
-        <!--<item name="android:fitsSystemWindows">true</item>-->
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
@@ -39,8 +39,9 @@
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
-    <style name="SplashTheme" parent="AppTheme">
+    <style name="SplashTheme" parent="@android:style/Theme.Holo.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 

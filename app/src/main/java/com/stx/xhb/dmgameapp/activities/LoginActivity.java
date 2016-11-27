@@ -176,24 +176,24 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         View focusView = null;
 
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(LoginActivity.this, R.string.error_null_password, Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this.getApplicationContext(), R.string.error_null_password, Toast.LENGTH_LONG).show();
             focusView = mPasswordView;
             cancel = true;
         }
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            Toast.makeText(LoginActivity.this, R.string.error_invalid_password, Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this.getApplicationContext(), R.string.error_invalid_password, Toast.LENGTH_LONG).show();
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(LoginActivity.this, R.string.error_field_required, Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this.getApplicationContext(), R.string.error_field_required, Toast.LENGTH_LONG).show();
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            Toast.makeText(LoginActivity.this, R.string.error_invalid_email, Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this.getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG).show();
             focusView = mEmailView;
             cancel = true;
         }
@@ -306,7 +306,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     int signalTip = jsonObject.getInt("signal");
                     if (signalTip != 1) {
                         String msg = jsonObject.getString("msg");
-                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this.getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                         return;
                     }
 
@@ -315,7 +315,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     int signal = loginEntity.getSignal();//响应状态码
                     if (signal == 1) {
                         LogUtil.e("jijiaxin: " + "成功");
-                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this.getApplicationContext(), "登录成功", Toast.LENGTH_LONG).show();
                         UserUtils.saveLoginInfo(LoginActivity.this, json);
                         UserUtils.clearUserInfo(LoginActivity.this);
 
@@ -323,7 +323,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                         finish();
                     } else {
                         showProgress(false);
-                        Toast.makeText(LoginActivity.this, loginEntity.getMsg(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this.getApplicationContext(), loginEntity.getMsg(), Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception ex) {
                     Log.i("login ret error:", ex.getMessage());

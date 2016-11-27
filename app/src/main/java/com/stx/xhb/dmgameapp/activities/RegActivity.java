@@ -167,7 +167,7 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
                     ValidateEntity validateEntity = new Gson().fromJson(JsonUtils.removeBOM(json), ValidateEntity.class);
                     Log.i("news usernet:", validateEntity.toString());
                     if (validateEntity.getSignal() == 1) {
-                        Toast.makeText(RegActivity.this, "验证码发送成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegActivity.this.getApplicationContext(), "验证码发送成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegActivity.this, RegConfirmActivity.class);
                         intent.putExtra("username", username);
                         intent.putExtra("email", email);
@@ -175,7 +175,7 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
                     } else {
                         try {
                             String errorTip = ValidateEntity.getErroMsg(result);
-                            Toast.makeText(RegActivity.this, errorTip, Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegActivity.this.getApplicationContext(), errorTip, Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -217,11 +217,11 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
         boolean cancel = false;
         View focusView = null;
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(RegActivity.this, R.string.error_field_required, Toast.LENGTH_LONG).show();
+            Toast.makeText(RegActivity.this.getApplicationContext(), R.string.error_field_required, Toast.LENGTH_LONG).show();
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            Toast.makeText(RegActivity.this, R.string.error_invalid_email, Toast.LENGTH_LONG).show();
+            Toast.makeText(RegActivity.this.getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG).show();
             focusView = mEmailView;
             cancel = true;
         }
