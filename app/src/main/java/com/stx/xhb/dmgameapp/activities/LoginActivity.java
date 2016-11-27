@@ -176,25 +176,24 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         View focusView = null;
 
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_null_password));
+            Toast.makeText(LoginActivity.this, R.string.error_null_password, Toast.LENGTH_LONG).show();
             focusView = mPasswordView;
             cancel = true;
         }
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-//            Toast.makeText(LoginActivity.this, R.string.error_invalid_password, Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, R.string.error_invalid_password, Toast.LENGTH_LONG).show();
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            Toast.makeText(LoginActivity.this, R.string.error_field_required, Toast.LENGTH_LONG).show();
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            Toast.makeText(LoginActivity.this, R.string.error_invalid_email, Toast.LENGTH_LONG).show();
             focusView = mEmailView;
             cancel = true;
         }

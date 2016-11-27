@@ -217,11 +217,11 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
         boolean cancel = false;
         View focusView = null;
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
+            Toast.makeText(RegActivity.this, R.string.error_field_required, Toast.LENGTH_LONG).show();
             focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
+            Toast.makeText(RegActivity.this, R.string.error_invalid_email, Toast.LENGTH_LONG).show();
             focusView = mEmailView;
             cancel = true;
         }
