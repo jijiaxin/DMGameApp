@@ -1,5 +1,6 @@
 package com.stx.xhb.dmgameapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -97,10 +98,13 @@ public class RegConfirmActivity extends BaseActivity {
                 ValidateEntity validateEntity = new Gson().fromJson(JsonUtils.removeBOM(json), ValidateEntity.class);
                 if (validateEntity.getSignal() == 1){
                     Toast.makeText(RegConfirmActivity.this, "注册成功", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(RegConfirmActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 }else{
                     try {
-                        String erroTip = ValidateEntity.getErroMsg(result);
-                        Toast.makeText(RegConfirmActivity.this, erroTip, Toast.LENGTH_LONG).show();
+                        String errorTip = ValidateEntity.getErroMsg(result);
+                        Toast.makeText(RegConfirmActivity.this, errorTip, Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
