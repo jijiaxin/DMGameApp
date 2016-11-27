@@ -1,6 +1,7 @@
 package com.stx.xhb.dmgameapp.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -92,6 +93,8 @@ public class RegActivity2 extends Activity {
                 ValidateEntity validateEntity = new Gson().fromJson(JsonUtils.removeBOM(json), ValidateEntity.class);
                 if (validateEntity.getSignal() == 1){
                     Toast.makeText(RegActivity2.this, "注册成功", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(RegActivity2.this, LoginActivity.class));
+                    finish();
                 }else{
                     try {
                         String erroTip = ValidateEntity.getErroMsg(result);

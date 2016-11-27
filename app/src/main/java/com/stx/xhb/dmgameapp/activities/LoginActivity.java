@@ -422,7 +422,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                         LoginEntity loginEntity = new Gson().fromJson(JsonUtils.removeBOM(json), LoginEntity.class);
                         int signal = loginEntity.getSignal();//响应状态码
                         if (signal == 1){
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG);
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
                             UserUtils.saveLoginInfo(LoginActivity.this, json);
                             finish();
                         }else{
