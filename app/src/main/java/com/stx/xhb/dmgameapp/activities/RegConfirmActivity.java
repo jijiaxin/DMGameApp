@@ -58,7 +58,7 @@ public class RegConfirmActivity extends Activity {
         pwd2 = (EditText)findViewById(R.id.reg2_pwd2);
         validate = (EditText) findViewById(R.id.validate);
         TextView tv_title = (TextView) findViewById(R.id.title);
-        tv_title.setText(this.getString(R.string.reg_tip));
+        tv_title.setText(this.getString(R.string.reg_confirm_tip));
 
         findViewById(R.id.email_sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
