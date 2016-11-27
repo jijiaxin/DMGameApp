@@ -55,9 +55,27 @@ public class UserUtils {
      * @return
      */
     public static UserEntity getUserInfo(Context context){
-        SharedPreferences sp = context.getSharedPreferences(NAME_USER, 1);
-        String info = sp.getString(CODE_USER, "");
-        return  new Gson().fromJson(info, UserEntity.class);
+        try{
+            SharedPreferences sp = context.getSharedPreferences(NAME_USER, 1);
+            String info = sp.getString(CODE_USER, "");
+            return  new Gson().fromJson(info, UserEntity.class);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+
+        }
+
+    }
+
+    /**
+     * 清除本地缓存用户信息
+     * @param context
+     */
+    public static void clearUserInfo(Context context){
+        SharedPreferences.Editor editor = context.getSharedPreferences(NAME_USER, 1).edit();
+        editor.putString(CODE_USER, "");
+        editor.apply();
     }
 
 }

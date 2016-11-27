@@ -86,7 +86,7 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.reg_username);
-        populateAutoComplete();
+//        populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
 //        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
