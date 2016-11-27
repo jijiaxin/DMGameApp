@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -29,8 +27,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
-import com.stx.xhb.dmgameapp.entity.Usernet;
-import com.stx.xhb.dmgameapp.entity.Usertoken;
+import com.stx.xhb.dmgameapp.entity.UserToken;
 import com.stx.xhb.dmgameapp.entity.ValidateEntity;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
@@ -47,25 +44,18 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 
 public class RegActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private UserSigninTask mAuthTask = null;
 
     private String reg_token; //会话token
     private ImageView iv_verify_pic;
-    private Image img_verify_pic; //验证码图片
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mPicVerifyCode;
-    private EditText mEmailVerifyCode;
     private AutoCompleteTextView mUserNameView;
-    private TextView mSendEmailVerify;
     private View mLoginFormView;
     private TextView tv_login; //登录
 
     private static final int REQUEST_READ_CONTACTS = 0;
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,9 +120,9 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
             public void onSuccess(String result) {
                 try {
                     String json = new String(result);
-                    Usertoken usernet = new Gson().fromJson(JsonUtils.removeBOM(json), Usertoken.class);
-                    if (usernet != null && (usernet.getData()) != null) {
-                        reg_token = (usernet.getData()).getGUID();
+                    UserToken userNet = new Gson().fromJson(JsonUtils.removeBOM(json), UserToken.class);
+                    if (userNet != null && (userNet.getData()) != null) {
+                        reg_token = (userNet.getData()).getGUID();
 
                         String url = String.format(HttpAdress.REG_PIC_VERIFY_URL, reg_token);
                         x.image().bind(iv_verify_pic, url);
@@ -220,7 +210,27 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
         String email = mEmailView.getText().toString();
         String username = mUserNameView.getText().toString();
         String picVerifyCode = mPicVerifyCode.getText().toString();
-        sendEmailVerify(email, username, picVerifyCode);
+
+        // Reset errors.
+        mEmailView.setError(null);
+
+        boolean cancel = false;
+        View focusView = null;
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            sendEmailVerify(email, username, picVerifyCode);
+        }
     }
 
     private void showVerifyPic(String imageUrl) {
@@ -273,69 +283,9 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
         }
     }
 
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    private void attemptSignin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
-        // Reset errors.
-        mEmailView.setError(null);
-//        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        String emailVerifyCode = mEmailVerifyCode.getText().toString();
-        String userName = mUserNameView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserSigninTask(email, password, emailVerifyCode, userName);
-            mAuthTask.execute((Void) null);
-        }
-    }
-
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
     }
 
     private void showProgress(final boolean show) {
@@ -399,7 +349,6 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
         super.onStop();
     }
 
-
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -408,101 +357,5 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserSigninTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-        private final String mEmailVerifyCode;
-        private final String mUserName;
-
-        UserSigninTask(String email, String password, String emailVerifyCode, String userName) {
-            mEmail = email;
-            mPassword = password;
-            mEmailVerifyCode = emailVerifyCode;
-            mUserName = userName;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            try {
-                signin();
-            } catch (Exception e) {
-                Log.i("news LException=>", e.getStackTrace().toString());
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            return true;
-        }
-
-        private void signin() {
-            String url = String.format(HttpAdress.REG_URL, mEmailVerifyCode, mEmail, mUserName, mPassword);
-            Log.i("news signin url:", url);
-            x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    try {
-                        String json = new String(result);
-                        Log.i("news signin ret:", json);
-                        //json解析
-                        Usernet usernet = new Gson().fromJson(JsonUtils.removeBOM(json), Usernet.class);
-                        Log.i("news usernet:", usernet.toString());
-                        int signal = usernet.getSignal();//响应状态码
-
-                    } catch (Exception ex) {
-                        Log.i("news signin error:", ex.getMessage());
-                    }
-                    //initData();
-                }
-
-                @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-
-                }
-
-                @Override
-                public void onCancelled(CancelledException cex) {
-
-                }
-
-                @Override
-                public void onFinished() {
-
-                }
-            });
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
     }
 }

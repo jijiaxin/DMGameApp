@@ -1,11 +1,9 @@
 package com.stx.xhb.dmgameapp.entity;
 
-import java.util.List;
-
 /**
  * Created by hasty on 16/11/5.
  */
-public class Usertoken {
+public class UserToken {
     private int signal;
     private String msg;
     // private String errors;
