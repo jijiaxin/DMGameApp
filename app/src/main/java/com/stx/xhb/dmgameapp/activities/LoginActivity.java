@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login_new);
         initView();
     }
 
@@ -121,7 +121,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         if (!mayRequestContacts()) {
             return;
         }
-
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -151,8 +150,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
      * Callback received when a permissions request has been completed.
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_READ_CONTACTS) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete();
@@ -177,7 +175,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_null_password));
             focusView = mPasswordView;
             cancel = true;
@@ -320,6 +318,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                         LogUtil.e("jijiaxin: " + "成功");
                         Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
                         UserUtils.saveLoginInfo(LoginActivity.this, json);
+                        UserUtils.clearUserInfo(LoginActivity.this);
 
                         showProgress(false);
                         finish();

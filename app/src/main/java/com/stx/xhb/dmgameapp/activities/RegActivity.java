@@ -72,7 +72,7 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
         //设置toolbar menu控件图片
-        ImageButton main_action_menu = (ImageButton)findViewById(R.id.main_action_menu);
+        ImageButton main_action_menu = (ImageButton) findViewById(R.id.main_action_menu);
         main_action_menu.setImageResource(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         main_action_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,36 +88,15 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
 //        populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//                    attemptSignin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-        mPicVerifyCode =(EditText) findViewById(R.id.reg_pic_verify_code);
-//        mEmailVerifyCode = (EditText) findViewById(R.id.reg_email_verify_code);
-//        mSendEmailVerify =(TextView) findViewById(R.id.reg_send_email_verify);
-
-//        mSendEmailVerify.setOnClickListener(new View.OnClickListener(){ //发送邮件验证码
-//            @Override
-//            public void onClick(View view) {
-//                getEmailVerify();
-//            }
-//        });
-//
+        mPicVerifyCode = (EditText) findViewById(R.id.reg_pic_verify_code);
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getEmailVerify();
-//                startActivity(new Intent(RegActivity.this, RegActivity2.class));
             }
         });
-//
+
         mLoginFormView = findViewById(R.id.login_form);
         tv_login = (TextView) findViewById(R.id.tv_reg_tip);
 
@@ -131,10 +110,8 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
             }
         });
 
-        //String imageUrl = HttpAdress.DMGEAME_URL + litpic;
-
         //下载图片，优先使用本地缓存图片
-        iv_verify_pic =(ImageView) findViewById(R.id.reg_verify_pic);
+        iv_verify_pic = (ImageView) findViewById(R.id.reg_verify_pic);
         iv_verify_pic.setOnClickListener(new View.OnClickListener() { //点击图片验证码，重新获取
             @Override
             public void onClick(View v) {
@@ -143,34 +120,26 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
         });
         reg_token = "";
 
-
         getVerifyPic();
-
     }
 
-    private void getSessionToken(){
+    private void getSessionToken() {
         String url = String.format(HttpAdress.REG_INIT_URL);
-        Log.i("news getSession url:", url);
         x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 try {
                     String json = new String(result);
-                    Log.i("news getSessionToken:", json);
                     Usertoken usernet = new Gson().fromJson(JsonUtils.removeBOM(json), Usertoken.class);
-                    Log.i("news usernet:", usernet.toString());
-                    if (usernet != null && ((Usertoken.Results) usernet.getData()) != null) {
-                        reg_token = ((Usertoken.Results) usernet.getData()).getGUID();
+                    if (usernet != null && (usernet.getData()) != null) {
+                        reg_token = (usernet.getData()).getGUID();
 
                         String url = String.format(HttpAdress.REG_PIC_VERIFY_URL, reg_token);
-                        Log.i("news getVerifyPic:", url);
                         x.image().bind(iv_verify_pic, url);
                     }
-                }
-                catch(Exception ex){
+                } catch (Exception ex) {
                     Log.i("getSessionToken error:", ex.getMessage());
                 }
-                //initData();
             }
 
             @Override
@@ -189,43 +158,12 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
             }
         });
     }
-    private void getVerifyPic(){
-        //if(reg_token.length() < 1 )
+
+    private void getVerifyPic() {
         getSessionToken();
-        //String url = String.format(HttpAdress.REG_PIC_VERIFY_URL, reg_token );
-        //Log.i("getVerifyPic url:", url);
-        //x.image().bind( iv_verify_pic, url );
-        /*get(new RequestParams(url), new Callback.CommonCallback<>() {
-            @Override
-            public void onSuccess(String result) {
-                String json = new String(result);
-                Log.i("getSessionToken ret:", json);
-                Usernet usernet = new Gson().fromJson(JsonUtils.removeBOM(json), Usernet.class);
-                Log.i("usernet:", usernet.toString());
-                if (usernet != null && ((Usernet.Results) usernet.getData()) != null) {
-                    reg_token = ((Usernet.Results) usernet.getData()).getGUID();
-                }
-                //initData();
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });*/
     }
 
-    private void sendEmailVerify(final String email, final String username, String pic_code ){ //发送图片验证码
+    private void sendEmailVerify(final String email, final String username, String pic_code) { //发送图片验证码
         String url = String.format(HttpAdress.REG_EMAIL_VERIFY_URL, email, username, reg_token, pic_code);
         Log.i("news sendEmail url:", url);
         showProgress(true);
@@ -234,36 +172,28 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
             public void onSuccess(String result) {
                 try {
                     showProgress(false);
-                    //String nulldata = "\"data\":[]";
-                    //String objectdata = "\"data\":{}";
                     String json = new String(result);
-                    //json.replaceAll(nulldata, objectdata);
                     Log.i("news getSessionToken:", json);
                     ValidateEntity validateEntity = new Gson().fromJson(JsonUtils.removeBOM(json), ValidateEntity.class);
                     Log.i("news usernet:", validateEntity.toString());
-                    if (validateEntity.getSignal() == 1){
+                    if (validateEntity.getSignal() == 1) {
                         Toast.makeText(RegActivity.this, "验证码发送成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegActivity.this, RegConfirmActivity.class);
                         intent.putExtra("username", username);
                         intent.putExtra("email", email);
                         startActivity(intent);
-                    }else{
+                    } else {
                         try {
-                            String erroTip = ValidateEntity.getErroMsg(result);
-                            Toast.makeText(RegActivity.this, erroTip, Toast.LENGTH_LONG).show();
+                            String errorTip = ValidateEntity.getErroMsg(result);
+                            Toast.makeText(RegActivity.this, errorTip, Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         getVerifyPic();
                     }
-//                    if (validateEntity != null && ((Usertoken.Results) usernet.getData()) != null) {
-//                        reg_token = ((Usertoken.Results) usernet.getData()).getGUID();
-//                    }
-                }
-                catch(Exception ex){
+                } catch (Exception ex) {
                     Log.i("news getSession error:", ex.getMessage());
                 }
-                //initData();
             }
 
             @Override
@@ -285,18 +215,21 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
             }
         });
     }
-    private void getEmailVerify(){
+
+    private void getEmailVerify() {
         String email = mEmailView.getText().toString();
         String username = mUserNameView.getText().toString();
         String picVerifyCode = mPicVerifyCode.getText().toString();
         sendEmailVerify(email, username, picVerifyCode);
     }
-    private void showVerifyPic(String imageUrl){
-        if(imageUrl.length() < 1)
-            imageUrl="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3538246725,1762874322&fm=116&gp=0.jpg";
+
+    private void showVerifyPic(String imageUrl) {
+        if (imageUrl.length() < 1)
+            imageUrl = "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3538246725,1762874322&fm=116&gp=0.jpg";
 
         x.image().bind(iv_verify_pic, imageUrl); //从网络下载图片
     }
+
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -406,9 +339,9 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
     }
 
     private void showProgress(final boolean show) {
-        if (show){
+        if (show) {
             LoadingDialog.create(this);
-        }else{
+        } else {
             LoadingDialog.cancel();
         }
     }
@@ -459,42 +392,11 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-       /* client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Login Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.stx.xhb.dmgameapp.activities/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-        */
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-       /* Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Login Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.stx.xhb.dmgameapp.activities/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();*/
     }
 
 
@@ -519,7 +421,7 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
         private final String mEmailVerifyCode;
         private final String mUserName;
 
-        UserSigninTask(String email, String password, String emailVerifyCode,String userName) {
+        UserSigninTask(String email, String password, String emailVerifyCode, String userName) {
             mEmail = email;
             mPassword = password;
             mEmailVerifyCode = emailVerifyCode;
@@ -528,12 +430,9 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
             try {
                 signin();
-                // Simulate network access.
-                // Thread.sleep(2000);
             } catch (Exception e) {
                 Log.i("news LException=>", e.getStackTrace().toString());
                 return false;
@@ -547,7 +446,6 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
                 }
             }
 
-            // TODO: register the new account here.
             return true;
         }
 
@@ -565,8 +463,7 @@ public class RegActivity extends BaseActivity implements LoaderManager.LoaderCal
                         Log.i("news usernet:", usernet.toString());
                         int signal = usernet.getSignal();//响应状态码
 
-                    }
-                    catch(Exception ex){
+                    } catch (Exception ex) {
                         Log.i("news signin error:", ex.getMessage());
                     }
                     //initData();

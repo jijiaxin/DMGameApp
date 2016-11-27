@@ -40,7 +40,6 @@ public class RegConfirmActivity extends BaseActivity {
     private void initIntent(){
         userName = getIntent().getStringExtra("username");
         email = getIntent().getStringExtra("email");
-
     }
 
     private void initView(){
