@@ -1,7 +1,5 @@
 package com.stx.xhb.dmgameapp.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -35,7 +33,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.entity.LoginEntity;
-import com.stx.xhb.dmgameapp.entity.Usernet;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.utils.UserUtils;
@@ -422,11 +419,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                         LoginEntity loginEntity = new Gson().fromJson(JsonUtils.removeBOM(json), LoginEntity.class);
                         int signal = loginEntity.getSignal();//响应状态码
                         if (signal == 1){
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG);
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
                             UserUtils.saveLoginInfo(LoginActivity.this, json);
                             finish();
                         }else{
-                            Toast.makeText(LoginActivity.this, loginEntity.getMsg(), Toast.LENGTH_LONG);
+                            Toast.makeText(LoginActivity.this, loginEntity.getMsg(), Toast.LENGTH_LONG).show();
                         }
                     }
                     catch(Exception ex){

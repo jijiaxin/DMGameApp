@@ -7,11 +7,8 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 
-//import com.qq.e.ads.splash.SplashAD;
-//import com.qq.e.ads.splash.SplashADListener;
 import com.stx.xhb.dmgameapp.MainActivity;
 import com.stx.xhb.dmgameapp.R;
-import com.tencent.connect.dataprovider.Constants;
 import com.umeng.analytics.MobclickAgent;
 
 /**
