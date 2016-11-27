@@ -1,9 +1,12 @@
 package com.stx.xhb.dmgameapp.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.Image;
 import android.net.Uri;
@@ -11,28 +14,20 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.design.widget.Snackbar;
-import android.content.Intent;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.entity.Usernet;
@@ -77,6 +72,15 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
+        //设置toolbar menu控件图片
+        ImageButton main_action_menu = (ImageButton)findViewById(R.id.main_action_menu);
+        main_action_menu.setImageResource(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        main_action_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         TextView tv_title = (TextView) findViewById(R.id.title);
         tv_title.setText(this.getString(R.string.reg_tip));
         // Set up the login form.
@@ -240,7 +244,7 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
                     Log.i("news usernet:", validateEntity.toString());
                     if (validateEntity.getSignal() == 1){
                         Toast.makeText(RegActivity.this, "验证码发送成功", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(RegActivity.this, RegActivity2.class);
+                        Intent intent = new Intent(RegActivity.this, RegConfirmActivity.class);
                         intent.putExtra("username", username);
                         intent.putExtra("email", email);
                         startActivity(intent);

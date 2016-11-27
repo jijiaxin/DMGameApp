@@ -2,10 +2,9 @@ package com.stx.xhb.dmgameapp.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,13 +16,12 @@ import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.view.LoadingDialog;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-public class RegActivity2 extends Activity {
+public class RegConfirmActivity extends Activity {
 
     String userName = "";
     String email = "";
@@ -47,6 +45,15 @@ public class RegActivity2 extends Activity {
     }
 
     private void initView(){
+        //设置toolbar menu控件图片
+        ImageButton main_action_menu = (ImageButton)findViewById(R.id.main_action_menu);
+        main_action_menu.setImageResource(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        main_action_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         pwd1 = (EditText)findViewById(R.id.reg2_pwd);
         pwd2 = (EditText)findViewById(R.id.reg2_pwd2);
         validate = (EditText) findViewById(R.id.validate);
@@ -91,11 +98,11 @@ public class RegActivity2 extends Activity {
                 LogUtil.e(json);
                 ValidateEntity validateEntity = new Gson().fromJson(JsonUtils.removeBOM(json), ValidateEntity.class);
                 if (validateEntity.getSignal() == 1){
-                    Toast.makeText(RegActivity2.this, "注册成功", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegConfirmActivity.this, "注册成功", Toast.LENGTH_LONG).show();
                 }else{
                     try {
                         String erroTip = ValidateEntity.getErroMsg(result);
-                        Toast.makeText(RegActivity2.this, erroTip, Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegConfirmActivity.this, erroTip, Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
