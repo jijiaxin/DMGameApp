@@ -32,7 +32,7 @@ public class RegConfirmActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reg2);
+        setContentView(R.layout.activity_reg_confirm);
 
         initIntent();
         initView();
