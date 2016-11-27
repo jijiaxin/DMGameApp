@@ -9,7 +9,6 @@ import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -29,7 +28,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.entity.LoginEntity;
@@ -40,6 +38,7 @@ import com.stx.xhb.dmgameapp.view.LoadingDialog;
 
 import org.json.JSONObject;
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -47,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.stx.xhb.dmgameapp.R.id.login;
 
 /**
  * A login screen that offers login via email/password.
@@ -54,14 +54,6 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -75,9 +67,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
         initView();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
     }
 
     private void initView() {
@@ -100,7 +89,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if (id == login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -179,10 +168,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -194,9 +179,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         boolean cancel = false;
         View focusView = null;
 
+        if (TextUtils.isEmpty(password)){
+            mPasswordView.setError(getString(R.string.error_null_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
+//            Toast.makeText(LoginActivity.this, R.string.error_invalid_password, Toast.LENGTH_LONG).show();
             focusView = mPasswordView;
             cancel = true;
         }
@@ -213,15 +204,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            login(email, password);
         }
     }
 
@@ -311,110 +297,59 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            try {
-                login();
-            } catch (Exception e) {
-                Log.i("Login Exception==>", e.getStackTrace().toString());
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            return true;
-        }
-
-        private void login() {
-            String url = String.format(HttpAdress.LOGIN_URL, mEmail, mPassword);
-            //下载网络数据
-            x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    try {
-                        String json = new String(result);
-                        Log.i("login ret:", json);
-                        // 此处逻辑主要应对服务器登录成功是data是对象，失败时候data变成数组，不一致的缺陷
-                        JSONObject jsonObject = new JSONObject(json);
-                        int signalTip = jsonObject.getInt("signal");
-                        if(signalTip != 1){
-                            String msg = jsonObject.getString("msg");
-                            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        //json解析  正常逻辑
-                        LoginEntity loginEntity = new Gson().fromJson(JsonUtils.removeBOM(json), LoginEntity.class);
-                        int signal = loginEntity.getSignal();//响应状态码
-                        if (signal == 1) {
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
-                            UserUtils.saveLoginInfo(LoginActivity.this, json);
-                            finish();
-                        } else {
-                            Toast.makeText(LoginActivity.this, loginEntity.getMsg(), Toast.LENGTH_LONG).show();
-                        }
-                    } catch (Exception ex) {
-                        Log.i("login ret error:", ex.getMessage());
+    private void login(String mEmail, String mPassword) {
+        String url = String.format(HttpAdress.LOGIN_URL, mEmail, mPassword);
+        //下载网络数据
+        x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    String json = new String(result);
+                    Log.i("login ret:", json);
+                    // 此处逻辑主要应对服务器登录成功是data是对象，失败时候data变成数组，不一致的缺陷
+                    JSONObject jsonObject = new JSONObject(json);
+                    int signalTip = jsonObject.getInt("signal");
+                    if (signalTip != 1) {
+                        String msg = jsonObject.getString("msg");
+                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_LONG).show();
+                        return;
                     }
-                    //initData();
+
+                    //json解析  正常逻辑
+                    LoginEntity loginEntity = new Gson().fromJson(JsonUtils.removeBOM(json), LoginEntity.class);
+                    int signal = loginEntity.getSignal();//响应状态码
+                    if (signal == 1) {
+                        LogUtil.e("jijiaxin: " + "成功");
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_LONG).show();
+                        UserUtils.saveLoginInfo(LoginActivity.this, json);
+
+                        showProgress(false);
+                        finish();
+                    } else {
+                        showProgress(false);
+                        Toast.makeText(LoginActivity.this, loginEntity.getMsg(), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception ex) {
+                    Log.i("login ret error:", ex.getMessage());
                 }
-
-                @Override
-                public void onError(Throwable ex, boolean isOnCallback) {
-
-                }
-
-                @Override
-                public void onCancelled(CancelledException cex) {
-
-                }
-
-                @Override
-                public void onFinished() {
-
-                }
-            });
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                //initData();
             }
-        }
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                showProgress(false);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                showProgress(false);
+            }
+
+            @Override
+            public void onFinished() {
+                showProgress(false);
+            }
+        });
     }
 }
 
