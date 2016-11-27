@@ -1,6 +1,5 @@
 package com.stx.xhb.dmgameapp.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +13,7 @@ import com.umeng.analytics.MobclickAgent;
 /**
  * 启动页
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
     //private SplashAD splashAD;
     private LinearLayout ll_ad;
 

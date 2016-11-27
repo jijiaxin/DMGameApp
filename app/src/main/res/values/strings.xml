@@ -45,7 +45,8 @@
     <string name="prompt_username">用户名</string>
     <string name="action_emailcode">输入邮箱收到的验证码</string>
     <string name="prompt_emailcode">邮件验证码</string>
-    <string name="reg_tip">注册帐户 1/2</string>
-    <string name="reg_confirm_tip">注册帐户 2/2</string>
+    <string name="reg_tip">注册帐户</string>
+    <string name="reg_tip_title">注册帐户1/2</string>
+    <string name="reg_confirm_tip_title">注册帐户2/2</string>
     <string name="login_tip">去登录</string>
 </resources>

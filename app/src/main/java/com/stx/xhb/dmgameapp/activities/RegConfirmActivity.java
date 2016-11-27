@@ -1,6 +1,5 @@
 package com.stx.xhb.dmgameapp.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -21,7 +20,7 @@ import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-public class RegConfirmActivity extends Activity {
+public class RegConfirmActivity extends BaseActivity {
 
     String userName = "";
     String email = "";
@@ -58,7 +57,7 @@ public class RegConfirmActivity extends Activity {
         pwd2 = (EditText)findViewById(R.id.reg2_pwd2);
         validate = (EditText) findViewById(R.id.validate);
         TextView tv_title = (TextView) findViewById(R.id.title);
-        tv_title.setText(this.getString(R.string.reg_confirm_tip));
+        tv_title.setText(this.getString(R.string.reg_confirm_tip_title));
 
         findViewById(R.id.email_sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override

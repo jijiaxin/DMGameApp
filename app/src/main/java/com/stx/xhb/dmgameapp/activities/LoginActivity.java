@@ -1,7 +1,6 @@
 package com.stx.xhb.dmgameapp.activities;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -51,7 +50,7 @@ import static com.stx.xhb.dmgameapp.R.id.login;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
 
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -160,7 +159,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.

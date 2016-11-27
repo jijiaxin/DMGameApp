@@ -1,7 +1,6 @@
 package com.stx.xhb.dmgameapp.activities;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -47,7 +46,7 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-public class RegActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class RegActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private UserSigninTask mAuthTask = null;
 
     private String reg_token; //会话token
@@ -82,7 +81,7 @@ public class RegActivity extends Activity implements LoaderManager.LoaderCallbac
             }
         });
         TextView tv_title = (TextView) findViewById(R.id.title);
-        tv_title.setText(this.getString(R.string.reg_tip));
+        tv_title.setText(this.getString(R.string.reg_tip_title));
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.reg_username);

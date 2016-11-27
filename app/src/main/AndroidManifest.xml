@@ -95,10 +95,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
-        <activity
             android:name=".activities.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -257,10 +253,6 @@
             android:resizeable="true"
             android:smallScreens="true" />
 
-        <activity
-            android:name=".LoginActivity"
-            android:launchMode="singleTop"
-            android:label="@string/title_activity_login" />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -268,11 +260,16 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
+        <activity
+            android:name=".activities.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.RegActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.RegConfirmActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.RegConfirmActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
