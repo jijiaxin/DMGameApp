@@ -273,7 +273,7 @@
             android:name=".activities.RegActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.RegActivity2"></activity>
+        <activity android:name=".activities.RegConfirmActivity"></activity>
     </application>
 
 </manifest>
