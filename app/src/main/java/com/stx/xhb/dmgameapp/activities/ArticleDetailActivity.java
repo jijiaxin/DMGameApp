@@ -76,8 +76,7 @@ public class ArticleDetailActivity extends ActionBarActivity implements View.OnC
         initWindow();
         initView();
         id = getIntent().getStringExtra("id");
-        typeid = getIntent().getStringExtra("typeid");
-        String url = String.format(HttpAdress.ChapterContent_URL, id, typeid);
+        String url = String.format(HttpAdress.ChapterContent_URL, id);
         //下载网络数据
         x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
             @Override

@@ -1,6 +1,7 @@
 package com.stx.xhb.dmgameapp.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Teewon on 2016/11/30.
@@ -13,7 +14,7 @@ public class Channel implements Serializable {
     int grade;
     int parent_id;
     int order;
-    Channel children;
+    List<Channel> children;
 
 
     public int getId() {
@@ -56,11 +57,11 @@ public class Channel implements Serializable {
         this.order = order;
     }
 
-    public Channel getChildren() {
+    public List<Channel> getChildren() {
         return children;
     }
 
-    public void setChildren(Channel children) {
+    public void setChildren(List<Channel> children) {
         this.children = children;
     }
 }

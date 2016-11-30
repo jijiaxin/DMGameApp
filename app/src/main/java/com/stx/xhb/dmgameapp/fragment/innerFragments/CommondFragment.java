@@ -14,11 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.classic.common.MultipleStatusView;
+import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.activities.ArticleDetailActivity;
 import com.stx.xhb.dmgameapp.activities.VideoDetailActivity;
 import com.stx.xhb.dmgameapp.adapter.ListViewAdapter;
 import com.stx.xhb.dmgameapp.entity.ChapterListItem;
+import com.stx.xhb.dmgameapp.entity.Topline;
+import com.stx.xhb.dmgameapp.entity.Toutiao;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.utils.NetConnectedUtils;
@@ -50,9 +53,9 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
     PtrClassicFrameLayout ptrLayout;
     private ListView lv_data;
     private View inflate;
-    private List<ChapterListItem> chapterListItems = new ArrayList<>();
+    private List<Topline> chapterListItems = new ArrayList<>();
     //加载的新数据
-    private List<ChapterListItem> datachapter;
+    private List<Topline> datachapter;
     private ListViewAdapter adapter;
     private int currenPage = 1;//当前页
     private int typeid;
@@ -87,7 +90,7 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
         //网络请求地址
         url = String.format(HttpAdress.ARTICLE_URL, typeid, currenPage);
         //实例化Adapter
-//        adapter = new ListViewAdapter(getActivity(), chapterListItems);
+        adapter = new ListViewAdapter(getActivity(), chapterListItems);
         //给listview绑定适配器
         lv_data.setAdapter(adapter);
         setSwipeRefreshInfo();
@@ -96,7 +99,7 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
     //加载网络数据
     private void downloadData(final int page) {
         //网络请求地址
-        String strUrl = String.format(HttpAdress.ARTICLE_URL, typeid, page);
+        String strUrl = String.format(HttpAdress.OTHER_LIST_URL, page);
         multiplestatusview.showLoading();
         x.http().get(new RequestParams(strUrl), new Callback.CommonCallback<String>() {
             @Override
@@ -104,7 +107,7 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
                 multiplestatusview.showContent();
                 String json = new String(result);
                 //解析json数据
-                datachapter = JsonUtils.parseChapterJson(json);
+                datachapter = new Gson().fromJson(json, Toutiao.class).getData();
                 if (datachapter.isEmpty()) {
                     multiplestatusview.showEmpty();
                 }
@@ -169,23 +172,22 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
 
         //将Url地址获取到
         Bundle bundle = new Bundle();
-        String typeid = chapterListItems.get(position).getTypeid();//获取到文章的分类id
-        String ariticleId = chapterListItems.get(position).getId();//文章id
+        String ariticleId = String.valueOf(chapterListItems.get(position).getId());//文章id
         Intent intent = new Intent();
         //遍历一下，判断是否为文章
-        for (Integer item : VIDEO_TYPE_ID) {
-            if (item == Integer.parseInt(typeid)) {
-                //点击条目跳转到视频详情界面
-                intent.setClass(getContext(), VideoDetailActivity.class);
-            } else {
-                //点击条目跳转到文章详情界面
-                intent.setClass(getContext(), ArticleDetailActivity.class);
-            }
-        }
-        bundle.putString("typeid", typeid);
-        bundle.putString("id", ariticleId);
-        intent.putExtras(bundle);
-        startActivity(intent);
+//        for (Integer item : VIDEO_TYPE_ID) {
+//            if (item == Integer.parseInt(typeid)) {
+//                //点击条目跳转到视频详情界面
+//                intent.setClass(getContext(), VideoDetailActivity.class);
+//            } else {
+//                //点击条目跳转到文章详情界面
+//                intent.setClass(getContext(), ArticleDetailActivity.class);
+//            }
+//        }
+//        bundle.putString("typeid", typeid);
+//        bundle.putString("id", ariticleId);
+//        intent.putExtras(bundle);
+//        startActivity(intent);
     }
 
     ///////////////////////////listview滑动监听方法/////////////////////
@@ -199,13 +201,13 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
             //开始加载数据
             isLoadData = true;//将加载新数据的标记设置为true
             //网络请求地址
-            url = String.format(HttpAdress.ARTICLE_URL, typeid, currenPage);
+            url = String.format(HttpAdress.OTHER_LIST_URL, currenPage);
             x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
                     String json = new String(result);
                     //解析json数据
-                    datachapter = JsonUtils.parseChapterJson(json);
+                    datachapter = new Gson().fromJson(json, Toutiao.class).getData();
                     if (datachapter != null) {
                         mFootView.setVisibility(View.GONE);//设置底部控件隐藏
                         chapterListItems.addAll(datachapter);

@@ -9,6 +9,7 @@ import com.stx.xhb.dmgameapp.entity.Channel;
 
 import org.json.JSONArray;
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -33,6 +34,7 @@ public class ChannelUtils {
 
             @Override
             public void onSuccess(String result) {
+                LogUtil.e(result);
                 try{
                     saveChannelInfo(context, result);
                 }catch (Exception e){
@@ -42,16 +44,19 @@ public class ChannelUtils {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                LogUtil.e("onError");
 
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
+                LogUtil.e("onCancelled");
 
             }
 
             @Override
             public void onFinished() {
+                LogUtil.e("onFinished");
 
             }
         });
@@ -69,7 +74,8 @@ public class ChannelUtils {
         String result = sharedPreferences.getString("channel", null);
         if (result != null){
             try {
-                ArrayList<Channel> channels = new Gson().fromJson(result, new TypeToken<List<Channel>>(){}.getType());
+                JSONArray jsonArray = new JSONArray(result);
+                ArrayList<Channel> channels = new Gson().fromJson(jsonArray.toString(), new TypeToken<ArrayList<Channel>>(){}.getType());
                 return channels;
             }catch (Exception e){
                 e.printStackTrace();

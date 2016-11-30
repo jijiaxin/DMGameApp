@@ -21,6 +21,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        getChannelInfo();
         MobclickAgent.onResume(this);       //统计时长
     }
 
@@ -34,7 +35,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         ll_ad = (LinearLayout) findViewById(R.id.ll_ad);
-        //splashAD = new SplashAD(this, ll_ad, Constants.APPID, "4080314488610390", this,5000);
+        getChannelInfo();
         jumpToMain();
     }
     //@Override

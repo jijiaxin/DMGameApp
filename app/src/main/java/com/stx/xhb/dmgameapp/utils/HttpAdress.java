@@ -19,7 +19,7 @@ public class HttpAdress {
     //public static final String ARTICLE_URL = "http://www.3dmgame.com/sitemap/api.php?row=10&typeid=%s&paging=1&page=%s";
     public static final String ARTICLE_URL = "http://www.3dmgame.com/sitemap/api.php?row=10&typeid=%s&paging=1&page=1";
     //文章详情的接口地址
-    public static final String ChapterContent_URL = "http://www.3dmgame.com/sitemap/api.php?id=%s&typeid=%s";
+    public static final String ChapterContent_URL = "http://59.110.23.172/articles/%s";
     //评论列表接口
     public static final String COMMENT_URL = "http://www.3dmgame.com/sitemap/api.php?type=1&aid=%s&pageno=%s";
     //评论提交接口
@@ -40,6 +40,8 @@ public class HttpAdress {
     public static final String CHANNEL_URL = "http://59.110.23.172/api/channels";
     //头条
     public static final String TOPLINE_URL = "http://59.110.23.172/api/sort_links/with_photos?page=%s";
+    //其他频道
+    public static final String OTHER_LIST_URL = "http://59.110.23.172/api/articles/channel/%S";
 
 
     /*

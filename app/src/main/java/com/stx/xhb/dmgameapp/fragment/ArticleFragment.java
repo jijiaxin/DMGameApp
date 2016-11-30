@@ -29,12 +29,7 @@ import java.util.List;
  */
 public class ArticleFragment extends Fragment {
     //标题
-    private static final String[] TITLE = new String[]{"新闻", "杂谈", "评测", "前瞻",
-            "原创", "盘点", "硬件", "时事"};
-    //分类id集合
-    private static final int[] TYPE_ID = new int[]{
-            151, 154, 153, 196, 197, 152, 199
-    };
+    private String[] TITLE = null;
     private View view;
     private ViewPager article_viewpager;
     private TabPageIndicator indicator;
@@ -82,8 +77,9 @@ public class ArticleFragment extends Fragment {
             getActivity().finish();
             return;
         }
-
+        TITLE = new String[channels.size()];
         for (int i = 0; i < channels.size(); i++) {
+            TITLE[i] = channels.get(i).getName();
             CommondFragment fragment = new CommondFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("typeid", channels.get(i).getId());

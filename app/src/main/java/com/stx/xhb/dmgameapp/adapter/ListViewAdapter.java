@@ -75,7 +75,7 @@ public class ListViewAdapter extends BaseAdapter {
         //格式化时间
         viewHolder.date.setText(chapterListItem.getUpdated_at());//文章发布时间
 //        viewHolder.comment.setText(chapterListItem.getFeedback());//评论数
-        viewHolder.tv_id.setText(chapterListItem.getId());//文章id
+        viewHolder.tv_id.setText(chapterListItem.getId()+"");//文章id
 //        viewHolder.tv_typeid.setText(chapterListItem.getTypeid());//文章分类id
         viewHolder.tv_url.setText(chapterListItem.getUrl());//文章URl
         viewHolder.iv.setImageResource(R.drawable.product_default);//设置默认图片
@@ -86,10 +86,8 @@ public class ListViewAdapter extends BaseAdapter {
         if (litpic == null) {
             iv.setImageResource(R.drawable.product_default);
         }
-        //地址拼接
-        String imageUrl = HttpAdress.DMGEAME_URL + litpic;
         //下载图片，优先使用本地缓存图片
-        x.image().bind(iv,imageUrl);
+        x.image().bind(iv,litpic);
         return convertView;
     }
 
