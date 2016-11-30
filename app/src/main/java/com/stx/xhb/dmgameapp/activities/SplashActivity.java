@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import com.stx.xhb.dmgameapp.MainActivity;
 import com.stx.xhb.dmgameapp.R;
+import com.stx.xhb.dmgameapp.utils.ChannelUtils;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -75,5 +76,10 @@ public class SplashActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void getChannelInfo(){
+        ChannelUtils channelUtils = new ChannelUtils(this);
+        channelUtils.getChannelInfoNet();
     }
 }

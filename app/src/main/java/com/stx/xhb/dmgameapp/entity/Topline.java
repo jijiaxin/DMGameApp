@@ -1,37 +1,39 @@
 package com.stx.xhb.dmgameapp.entity;
 
+import java.io.Serializable;
+
 /**
- * Created by xhb on 2016/1/19.
- * 广告轮播实体类
+ * Created by Teewon on 2016/11/30.
  */
-public class Banner {
+
+public class Topline implements Serializable {
 
     /**
-     * id : 13
+     * id : 15
      * state : 2
-     * link_id : 0
+     * link_id : 14
      * type : 0
-     * title : 金马：好姑娘光芒万丈，坏女孩闯荡四方
+     * title : 余生很长，何必慌张-1
      * author_id : 1
      * auditor_id : 1
-     * channel_id : 2
+     * channel_id : 10
      * title_bold : 0
      * title_color : #333333
      * subtitle :
      * cover_pic : http://yun.app/upload/cover_pic/cover_583d1b400be13.jpeg
      * top_grade : 0
-     * description : 金马奖之夜，最佳女主角获得者为《七月与安生》中女主角饰演者周冬雨和马思纯。“双影后”的获得更加映射出七月与安生的关系，珠联璧合，不可分离！就像马思纯致辞中说的那样:“七月和安生已经活成了同一个人，没有彼此，就没有今天站在领奖台的两个人。”
+     * description :
      * source :
      * original_url :
      * is_soft : 0
-     * is_political : 1
+     * is_political : 0
      * is_international : 0
      * is_important : 0
-     * published_at : 2016-11-27 21:59:58
-     * created_at : 2016-11-27 22:03:10
-     * updated_at : 2016-11-27 22:23:53
+     * published_at : null
+     * created_at : 2016-11-28 14:14:20
+     * updated_at : 2016-11-28 15:48:52
      * deleted_at : null
-     * url : http://59.110.23.172/articles/13
+     * url : http://59.110.23.172/articles/15
      */
 
     private int id;
@@ -54,7 +56,7 @@ public class Banner {
     private int is_political;
     private int is_international;
     private int is_important;
-    private String published_at;
+    private Object published_at;
     private String created_at;
     private String updated_at;
     private Object deleted_at;
@@ -220,11 +222,11 @@ public class Banner {
         this.is_important = is_important;
     }
 
-    public String getPublished_at() {
+    public Object getPublished_at() {
         return published_at;
     }
 
-    public void setPublished_at(String published_at) {
+    public void setPublished_at(Object published_at) {
         this.published_at = published_at;
     }
 

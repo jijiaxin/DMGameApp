@@ -36,6 +36,11 @@ public class HttpAdress {
     public static final String REG_EMAIL_VERIFY_URL="https://passportforapp.skykiwi.com/v2/register/sendmail.do?email=%s&username=%s&rndUid=%s&picVerifyCode=%s";
     public static final String REG_URL = "https://passportforapp.skykiwi.com/v2/register/done.do?emailVerifyCode=%s&email=%s&username=%s&password=%s";
 
+    //频道
+    public static final String CHANNEL_URL = "http://59.110.23.172/api/channels";
+    //头条
+    public static final String TOPLINE_URL = "http://59.110.23.172/api/sort_links/with_photos?page=%s";
+
 
     /*
  登录接口：

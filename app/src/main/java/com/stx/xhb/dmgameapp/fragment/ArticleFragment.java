@@ -14,8 +14,11 @@ import android.widget.TextView;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.activities.SettingActivity;
 import com.stx.xhb.dmgameapp.adapter.TabPageIndicatorAdapter;
+import com.stx.xhb.dmgameapp.entity.Channel;
 import com.stx.xhb.dmgameapp.fragment.innerFragments.CommondFragment;
 import com.stx.xhb.dmgameapp.fragment.innerFragments.NewsFragment;
+import com.stx.xhb.dmgameapp.utils.ChannelUtils;
+import com.stx.xhb.dmgameapp.view.TipsToast;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
@@ -70,11 +73,20 @@ public class ArticleFragment extends Fragment {
 
         NewsFragment newsFragment = new NewsFragment();//新闻
         fragments.add(newsFragment);
-        //循环创建7个子fragment
-        for (int i = 0; i < TYPE_ID.length; i++) {
-            CommondFragment fragment = new CommondFragment();//杂谈
+        ChannelUtils channelUtils = new ChannelUtils(getActivity());
+        List<Channel> channels = channelUtils.getChannelInfoCache();
+        if (channels != null && channels.size() > 0){
+
+        }else{
+            TipsToast.makeText(getActivity(),"数据错误，请重启APP", TipsToast.LENGTH_LONG).show();
+            getActivity().finish();
+            return;
+        }
+
+        for (int i = 0; i < channels.size(); i++) {
+            CommondFragment fragment = new CommondFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt("typeid", TYPE_ID[i]);
+            bundle.putInt("typeid", channels.get(i).getId());
             fragment.setArguments(bundle);
             fragments.add(fragment);
         }

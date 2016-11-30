@@ -16,23 +16,22 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.classic.common.MultipleStatusView;
+import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.activities.ArticleDetailActivity;
 import com.stx.xhb.dmgameapp.adapter.ListViewAdapter;
-import com.stx.xhb.dmgameapp.entity.ChapterListItem;
+import com.stx.xhb.dmgameapp.entity.Topline;
+import com.stx.xhb.dmgameapp.entity.Toutiao;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.utils.NetConnectedUtils;
 import com.stx.xhb.dmgameapp.utils.ToastUtil;
 import com.stx.xhb.dmgameapp.view.ImageCycleView;
-
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -53,9 +52,9 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     private LayoutInflater mInflater;
     private View mHeadView;
     private View mFootView;
-    private List<ChapterListItem> data = new ArrayList<>();
+    private List<Topline> data = new ArrayList<>();
     //Android自带下拉刷新控件
-    private List<ChapterListItem> chapterListItems;
+    private List<Topline> chapterListItems;
     private int currenPage = 1;//当前页
     private boolean isBottom;//是否到底部的标记
     private boolean isLoadData = false;//判断是否已经在加载数据
@@ -137,14 +136,15 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     private void downloadData(final int page) {
         multiplestatusview.showLoading();
         //使用xutils请求网络数据
-        String stUrl = String.format(HttpAdress.NEWS_URL, page);
+        String stUrl = String.format(HttpAdress.TOPLINE_URL, page);
         Log.i("news fragment url:", stUrl);
         x.http().get(new RequestParams(stUrl), new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 multiplestatusview.showContent();
                 String json = new String(result);
-                chapterListItems = JsonUtils.parseChapterJson(json);
+
+                chapterListItems = new Gson().fromJson(json, Toutiao.class).getData();
                 if (page == 1) {
                     data.clear();
                 }
@@ -212,18 +212,18 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //点击条目跳转到详情界面
-        Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
-        //将Url地址获取到
-        Bundle bundle = new Bundle();
-        ///////////此处减-1是因为在listview头部添加了一个viewpager，
-        // 造成所有listview的条目的位置都往下移了一个
-        String typeid = data.get(position - 1).getTypeid();//获取到文章分类id
-        String ariticleId = data.get(position - 1).getId();//获取文章id
-        bundle.putString("typeid", typeid);
-        bundle.putString("id", ariticleId);
-        Log.i("=====>", "" + typeid + "=====》" + ariticleId);
-        intent.putExtras(bundle);
-        startActivity(intent);
+//        Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+//        //将Url地址获取到
+//        Bundle bundle = new Bundle();
+//        ///////////此处减-1是因为在listview头部添加了一个viewpager，
+//        // 造成所有listview的条目的位置都往下移了一个
+//        String typeid = data.get(position - 1).getTypeid();//获取到文章分类id
+//        String ariticleId = data.get(position - 1).getId();//获取文章id
+//        bundle.putString("typeid", typeid);
+//        bundle.putString("id", ariticleId);
+//        Log.i("=====>", "" + typeid + "=====》" + ariticleId);
+//        intent.putExtras(bundle);
+//        startActivity(intent);
     }
 
     //////////////////////listview的滑动事件监听/////////////////
@@ -242,7 +242,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
                 @Override
                 public void onSuccess(String result) {
                     String json = new String(result);
-                    chapterListItems = JsonUtils.parseChapterJson(json);
+//                    chapterListItems = JsonUtils.parseChapterJson(json);
                     if (chapterListItems != null) {
                         mFootView.setVisibility(View.GONE);//设置隐藏进度条
                         data.addAll(chapterListItems);

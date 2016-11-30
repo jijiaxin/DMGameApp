@@ -87,7 +87,7 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
         //网络请求地址
         url = String.format(HttpAdress.ARTICLE_URL, typeid, currenPage);
         //实例化Adapter
-        adapter = new ListViewAdapter(getActivity(), chapterListItems);
+//        adapter = new ListViewAdapter(getActivity(), chapterListItems);
         //给listview绑定适配器
         lv_data.setAdapter(adapter);
         setSwipeRefreshInfo();

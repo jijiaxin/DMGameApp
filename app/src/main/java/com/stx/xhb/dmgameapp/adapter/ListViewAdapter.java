@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.entity.ChapterListItem;
+import com.stx.xhb.dmgameapp.entity.Topline;
 import com.stx.xhb.dmgameapp.utils.DateUtils;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 
@@ -23,10 +24,10 @@ import java.util.List;
  */
 public class ListViewAdapter extends BaseAdapter {
     private Context context;
-    private List<ChapterListItem> chapterListItems;
+    private List<Topline> chapterListItems;
     private LayoutInflater mLayoutInflater;
 
-    public ListViewAdapter(Context context, List<ChapterListItem> chapterListItems) {
+    public ListViewAdapter(Context context, List<Topline> chapterListItems) {
         this.context = context;
         this.chapterListItems = chapterListItems;
         if (mLayoutInflater == null) {
@@ -69,20 +70,18 @@ public class ListViewAdapter extends BaseAdapter {
             //获取缓存布局
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        ChapterListItem chapterListItem = chapterListItems.get(position);
+        Topline chapterListItem = chapterListItems.get(position);
         viewHolder.title.setText(chapterListItem.getTitle());
         //格式化时间
-        String senddate = chapterListItem.getSenddate();
-        String time = DateUtils.dateFromat(senddate);
-        viewHolder.date.setText(time);//文章发布时间
-        viewHolder.comment.setText(chapterListItem.getFeedback());//评论数
+        viewHolder.date.setText(chapterListItem.getUpdated_at());//文章发布时间
+//        viewHolder.comment.setText(chapterListItem.getFeedback());//评论数
         viewHolder.tv_id.setText(chapterListItem.getId());//文章id
-        viewHolder.tv_typeid.setText(chapterListItem.getTypeid());//文章分类id
-        viewHolder.tv_url.setText(chapterListItem.getArcurl());//文章URl
+//        viewHolder.tv_typeid.setText(chapterListItem.getTypeid());//文章分类id
+        viewHolder.tv_url.setText(chapterListItem.getUrl());//文章URl
         viewHolder.iv.setImageResource(R.drawable.product_default);//设置默认图片
         final ImageView iv = viewHolder.iv;
         //获取到图片地址
-        String litpic = chapterListItem.getLitpic();
+        String litpic = chapterListItem.getCover_pic();
         //如果图片地址为空，则设置默认图片
         if (litpic == null) {
             iv.setImageResource(R.drawable.product_default);
