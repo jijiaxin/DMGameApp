@@ -35,29 +35,29 @@
             android:textColor="@drawable/menu_color_selector"
             android:textSize="15sp" />
 
-        <RadioButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawableTop="@drawable/menu2_drawable_selector"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="生活"
-            android:textColor="@drawable/menu_color_selector"
-            android:textSize="15sp" />
+        <!--<RadioButton-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:button="@null"-->
+            <!--android:drawableTop="@drawable/menu2_drawable_selector"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="8dp"-->
+            <!--android:text="生活"-->
+            <!--android:textColor="@drawable/menu_color_selector"-->
+            <!--android:textSize="15sp" />-->
 
-        <RadioButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawableTop="@drawable/menu3_drawable_selector"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="论坛"
-            android:textColor="@drawable/menu_color_selector"
-            android:textSize="15sp" />
+        <!--<RadioButton-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:button="@null"-->
+            <!--android:drawableTop="@drawable/menu3_drawable_selector"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="8dp"-->
+            <!--android:text="论坛"-->
+            <!--android:textColor="@drawable/menu_color_selector"-->
+            <!--android:textSize="15sp" />-->
 
         <RadioButton
             android:layout_width="0dp"

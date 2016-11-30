@@ -12,9 +12,7 @@ import android.widget.RadioGroup;
 
 import com.stx.xhb.dmgameapp.adapter.MainFragmentPageAdapter;
 import com.stx.xhb.dmgameapp.fragment.ArticleFragment;
-import com.stx.xhb.dmgameapp.fragment.ForumFragment;
 import com.stx.xhb.dmgameapp.fragment.MyFragment;
-import com.stx.xhb.dmgameapp.fragment.VideoFragment;
 import com.stx.xhb.dmgameapp.utils.SystemBarTintManager;
 import com.stx.xhb.dmgameapp.view.TipsToast;
 import com.umeng.analytics.MobclickAgent;
@@ -78,13 +76,13 @@ public class MainActivity extends FragmentActivity {
     //初始化数据
     private void initData() {
         ArticleFragment airticle_fragemnt = new ArticleFragment();
-        ForumFragment forum_Fragment = new ForumFragment();
+//        VideoFragment video_Fragment = new VideoFragment();
+//        ForumFragment forum_Fragment = new ForumFragment();
 //        GameFragment game_Fragment = new GameFragment();
         MyFragment my_Fragment = new MyFragment();
-        VideoFragment video_Fragment = new VideoFragment();
         fragemnts.add(airticle_fragemnt);//文章
-        fragemnts.add(video_Fragment);//视频
-        fragemnts.add(forum_Fragment);//论坛
+//        fragemnts.add(video_Fragment);//视频
+//        fragemnts.add(forum_Fragment);//论坛
         //fragemnts.add(game_Fragment);//游戏
         fragemnts.add(my_Fragment); //我
     }
