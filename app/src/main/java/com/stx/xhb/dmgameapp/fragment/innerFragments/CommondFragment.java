@@ -170,24 +170,15 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        //点击条目跳转到详情界面
+        Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
         //将Url地址获取到
         Bundle bundle = new Bundle();
-        String ariticleId = String.valueOf(chapterListItems.get(position).getId());//文章id
-        Intent intent = new Intent();
-        //遍历一下，判断是否为文章
-//        for (Integer item : VIDEO_TYPE_ID) {
-//            if (item == Integer.parseInt(typeid)) {
-//                //点击条目跳转到视频详情界面
-//                intent.setClass(getContext(), VideoDetailActivity.class);
-//            } else {
-//                //点击条目跳转到文章详情界面
-//                intent.setClass(getContext(), ArticleDetailActivity.class);
-//            }
-//        }
-//        bundle.putString("typeid", typeid);
-//        bundle.putString("id", ariticleId);
-//        intent.putExtras(bundle);
-//        startActivity(intent);
+        ///////////此处减-1是因为在listview头部添加了一个viewpager，
+        // 造成所有listview的条目的位置都往下移了一个
+        bundle.putString("url", chapterListItems.get(position-1).getUrl());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     ///////////////////////////listview滑动监听方法/////////////////////

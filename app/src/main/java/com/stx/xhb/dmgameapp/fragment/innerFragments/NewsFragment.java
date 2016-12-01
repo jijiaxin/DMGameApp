@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.activities.ArticleDetailActivity;
 import com.stx.xhb.dmgameapp.adapter.ListViewAdapter;
+import com.stx.xhb.dmgameapp.entity.Banner;
 import com.stx.xhb.dmgameapp.entity.Topline;
 import com.stx.xhb.dmgameapp.entity.Toutiao;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
@@ -55,6 +56,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     private List<Topline> data = new ArrayList<>();
     //Android自带下拉刷新控件
     private List<Topline> chapterListItems;
+    private List<Banner> banners;
     private int currenPage = 1;//当前页
     private boolean isBottom;//是否到底部的标记
     private boolean isLoadData = false;//判断是否已经在加载数据
@@ -89,18 +91,16 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
         news_lv.addFooterView(mFootView, null, false);
         adapter = new ListViewAdapter(getActivity(), data);
         //初始化图片轮播数据
-        initBanner();
+//        initBanner();
     }
 
     //初始化图片轮播数据
     private void initBanner() {
         List<ImageCycleView.ImageInfo> list = new ArrayList<>();
         //使用网络加载数据，最后一个参数为图片新闻的id
-        list.add(new ImageCycleView.ImageInfo("http://www.3dmgame.com/uploads/allimg/130124/11111111111111111111111111-130124144424.jpg", "新年首款大作 《龙之信条：黑暗觉者》破解版发布", "3542051"));
-        list.add(new ImageCycleView.ImageInfo("http://www.3dmgame.com/uploads/allimg/130124/11111111111111111111-130124145Q3.jpg", "3DM轩辕组制作 《暗黑地牢》正式版汉化补丁发布", "3544323"));
-        list.add(new ImageCycleView.ImageInfo("http://www.3dmgame.com/uploads/allimg/130124/1111111111-130124145Q7.jpg", "育碧旗下射击游戏《全境封锁》PC版详细配置公布", "3544277"));
-        list.add(new ImageCycleView.ImageInfo("http://www.3dmgame.com/uploads/allimg/130124/11111111111-130124145R1.jpg", "PS4《侠盗猎车5》重制版新截图展示华丽视觉效果", "3395945"));
-        list.add(new ImageCycleView.ImageInfo("http://www.3dmgame.com/uploads/allimg/130124/1111111111111111111111111111111-130124145R1-50.jpg", "1月31日3DM新游评测与推荐 老司机是时候开车了", "3545703"));
+        for (Banner banner : banners){
+            list.add(new ImageCycleView.ImageInfo(banner.getCover_pic(), banner.getTitle(), banner.getUrl()));
+        }
         mImageCycleView.setOnPageClickListener(new ImageCycleView.OnPageClickListener() {
             @Override
             public void onClick(View imageView, ImageCycleView.ImageInfo imageInfo) {
@@ -143,8 +143,10 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
             public void onSuccess(String result) {
                 multiplestatusview.showContent();
                 String json = new String(result);
-
-                chapterListItems = new Gson().fromJson(json, Toutiao.class).getData();
+                Toutiao toutiao = new Gson().fromJson(json,Toutiao.class);
+                chapterListItems = toutiao.getData();
+                banners = toutiao.getMeta().getPhotos();
+                initBanner();
                 if (page == 1) {
                     data.clear();
                 }
@@ -212,18 +214,14 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //点击条目跳转到详情界面
-//        Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
-//        //将Url地址获取到
-//        Bundle bundle = new Bundle();
-//        ///////////此处减-1是因为在listview头部添加了一个viewpager，
-//        // 造成所有listview的条目的位置都往下移了一个
-//        String typeid = data.get(position - 1).getTypeid();//获取到文章分类id
-//        String ariticleId = data.get(position - 1).getId();//获取文章id
-//        bundle.putString("typeid", typeid);
-//        bundle.putString("id", ariticleId);
-//        Log.i("=====>", "" + typeid + "=====》" + ariticleId);
-//        intent.putExtras(bundle);
-//        startActivity(intent);
+        Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+        //将Url地址获取到
+        Bundle bundle = new Bundle();
+        ///////////此处减-1是因为在listview头部添加了一个viewpager，
+        // 造成所有listview的条目的位置都往下移了一个
+        bundle.putString("url", data.get(position-1).getUrl());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     //////////////////////listview的滑动事件监听/////////////////

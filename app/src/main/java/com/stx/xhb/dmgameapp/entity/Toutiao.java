@@ -21,7 +21,15 @@ public class Toutiao implements Serializable {
     }
 
 
-    private class Meta{
+    public Meta getMeta() {
+        return meta;
+    }
+
+    public void setMeta(Meta meta) {
+        this.meta = meta;
+    }
+
+    public class Meta{
         List<Banner> photos;
 
         public List<Banner> getPhotos() {

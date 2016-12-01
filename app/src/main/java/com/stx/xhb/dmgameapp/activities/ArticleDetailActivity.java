@@ -1,6 +1,7 @@
 package com.stx.xhb.dmgameapp.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -12,16 +13,21 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.google.gson.Gson;
 import com.software.shell.fab.ActionButton;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.entity.Detail;
+import com.stx.xhb.dmgameapp.entity.LoginEntity;
+import com.stx.xhb.dmgameapp.entity.UserEntity;
 import com.stx.xhb.dmgameapp.utils.DateUtils;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.utils.SystemBarTintManager;
 import com.stx.xhb.dmgameapp.utils.ToastUtil;
+import com.stx.xhb.dmgameapp.utils.UserUtils;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -31,14 +37,18 @@ import com.umeng.socialize.Config;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.Constant;
 import com.umeng.socialize.media.UMImage;
 
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.UnsupportedEncodingException;
+import java.net.CookieStore;
 import java.net.URLDecoder;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -59,6 +69,7 @@ public class ArticleDetailActivity extends ActionBarActivity implements View.OnC
     private String senddate;//发布时间
     private SmoothProgressBar webProgress;//进度条
     private ActionButton actionButton;//评论按钮
+    String url ;
 
     final SHARE_MEDIA[] displaylist = new SHARE_MEDIA[]
             {
@@ -75,38 +86,8 @@ public class ArticleDetailActivity extends ActionBarActivity implements View.OnC
         ButterKnife.bind(this);
         initWindow();
         initView();
-        id = getIntent().getStringExtra("id");
-        String url = String.format(HttpAdress.ChapterContent_URL, id);
-        //下载网络数据
-        x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                String json = new String(result);
-                //json解析
-                Detail detail = new Gson().fromJson(JsonUtils.removeBOM(json), Detail.class);
-                body = detail.getBody();//文章内容
-                title = detail.getTitle();//文章标题
-                writer = detail.getWriter();//文章作者
-                senddate = detail.getSenddate();//文章发布时间
-                arcurl = detail.getArcurl();
-                initData();
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
+        url = getIntent().getStringExtra("url");
+        initData(url);
         initListener();
     }
 
@@ -166,7 +147,9 @@ public class ArticleDetailActivity extends ActionBarActivity implements View.OnC
 
 
     //初始化数据
-    private void initData() {
+    private void initData(String url) {
+        //设置cookie
+        synCookies();
         //启用支持javascript
         WebSettings settings = comment_web.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -189,34 +172,8 @@ public class ArticleDetailActivity extends ActionBarActivity implements View.OnC
             }
         });
         //加载网络资源
-        if (body != null) {
-            try {
-                //由于body的数据进行了URLEncode编码，所以需要我们再进行URLDecoder解码
-                //否则只能显示图片
-                decode = URLDecoder.decode(body, "utf-8");
-                Log.i("--------->decode", "" + decode);
-                String date = DateUtils.dateFromat(senddate);//发布时间
-                String html = "<html><body>"
-                        + "<h3>"
-                        + title
-                        + "</h3>"
-                        + "<p>"
-                        + "作者:" + writer
-                        + "&nbsp&nbsp"
-                        + "发布时间:" + date
-                        + "</p>"
-                        + "<style>"
-                        + "img{width:100%;height:auto;}"//自定义样式，设置图片显示大小
-                        + "</style>"
-                        + decode
-                        + "</body></html>";
-                //使用这种方法，前面添加网站的地址 http://www.3dmgame.com，可以解决，有些图片前面乜有完整请求地址的问题
-                comment_web.loadDataWithBaseURL(HttpAdress.DMGEAME_URL, html, "text/html", "charset=UTF-8", null);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            Log.i("body------>>>>>>>", "" + body);
             //设置在同一个webview中打开新的网页
+        comment_web.loadUrl(url);
             comment_web.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -225,7 +182,6 @@ public class ArticleDetailActivity extends ActionBarActivity implements View.OnC
                     return true;
                 }
             });
-        }
 
     }
 
@@ -300,5 +256,23 @@ public class ArticleDetailActivity extends ActionBarActivity implements View.OnC
                 ToastUtil.showAtCenter(ArticleDetailActivity.this,"取消分享");
             }
         };
+    }
+
+
+    /**
+     * 同步一下cookie
+     */
+    public void synCookies() {
+        LogUtil.e("set cookie================");
+        LoginEntity loginEntity = UserUtils.getLoginInfo(this);
+        if (loginEntity != null){
+            CookieSyncManager.createInstance(this);
+            String token = loginEntity.getData().getToken();
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptCookie(true);
+            cookieManager.setCookie(url, "token="+token);
+            CookieSyncManager.getInstance().sync();
+            LogUtil.e("cookie: " + cookieManager.getCookie(url));
+        }
     }
 }
