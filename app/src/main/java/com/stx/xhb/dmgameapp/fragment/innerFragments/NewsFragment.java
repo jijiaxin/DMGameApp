@@ -235,14 +235,19 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
             currenPage++;
             //加载新数据
             isLoadData = true;//将加载数据的状态设置为true
-            url = String.format(HttpAdress.NEWS_URL, currenPage);
+            url = String.format(HttpAdress.TOPLINE_URL, currenPage);
             mFootView.setVisibility(View.VISIBLE);//设置进度条出现
             //xutils加载网络数据
             x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    String json = new String(result);
+//                    String json = new String(result);
 //                    chapterListItems = JsonUtils.parseChapterJson(json);
+
+                    String json = new String(result);
+                    Toutiao toutiao = new Gson().fromJson(json, Toutiao.class);
+                    chapterListItems = toutiao.getData();
+
                     if (chapterListItems != null) {
                         mFootView.setVisibility(View.GONE);//设置隐藏进度条
                         data.addAll(chapterListItems);
