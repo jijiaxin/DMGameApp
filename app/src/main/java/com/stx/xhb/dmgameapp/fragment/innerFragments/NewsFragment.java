@@ -217,8 +217,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
             TextView textView = (TextView) view.findViewById(R.id.text);
             textView.setText(banners.get(position).getTitle());
             imageView.setImageResource(R.drawable.default_image);
-            imageView.setBackgroundResource(0);
-//            ImageLoader.getInstance().displayImage(data,imageView);
+//            imageView.setBackgroundResource(0);
             x.image().bind(imageView, data);
 
         }
