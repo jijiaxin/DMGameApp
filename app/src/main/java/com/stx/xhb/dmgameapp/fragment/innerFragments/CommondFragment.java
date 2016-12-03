@@ -17,13 +17,10 @@ import com.classic.common.MultipleStatusView;
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
 import com.stx.xhb.dmgameapp.activities.ArticleDetailActivity;
-import com.stx.xhb.dmgameapp.activities.VideoDetailActivity;
 import com.stx.xhb.dmgameapp.adapter.ListViewAdapter;
-import com.stx.xhb.dmgameapp.entity.ChapterListItem;
 import com.stx.xhb.dmgameapp.entity.Topline;
 import com.stx.xhb.dmgameapp.entity.Toutiao;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
-import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.utils.NetConnectedUtils;
 import com.stx.xhb.dmgameapp.utils.ToastUtil;
 
@@ -176,7 +173,7 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
         Bundle bundle = new Bundle();
         ///////////此处减-1是因为在listview头部添加了一个viewpager，
         // 造成所有listview的条目的位置都往下移了一个
-        bundle.putString("url", chapterListItems.get(position-1).getUrl());
+        bundle.putString("url", chapterListItems.get(position).getUrl());
         intent.putExtras(bundle);
         startActivity(intent);
     }

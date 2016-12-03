@@ -59,12 +59,12 @@ public class MainActivity extends BaseActivity {
 
     //初始化数据
     private void initData() {
-        ArticleFragment airticle_fragemnt = new ArticleFragment();
+        ArticleFragment article_fragment = new ArticleFragment();
 //        VideoFragment video_Fragment = new VideoFragment();
 //        ForumFragment forum_Fragment = new ForumFragment();
 //        GameFragment game_Fragment = new GameFragment();
         MyFragment my_Fragment = new MyFragment();
-        fragemnts.add(airticle_fragemnt);//文章
+        fragemnts.add(article_fragment);//文章
 //        fragemnts.add(video_Fragment);//视频
 //        fragemnts.add(forum_Fragment);//论坛
         //fragemnts.add(game_Fragment);//游戏
