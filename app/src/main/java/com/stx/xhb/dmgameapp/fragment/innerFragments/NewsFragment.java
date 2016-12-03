@@ -161,7 +161,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 //            images.add(str);
 //        }
         for (Banner banner : banners) {
-            images.add(tempExe(banner.getCover_pic()));
+            images.add(banner.getCover_pic());
         }
 
         convenientBanner.setPages(

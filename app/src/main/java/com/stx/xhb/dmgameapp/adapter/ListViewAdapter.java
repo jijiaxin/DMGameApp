@@ -83,11 +83,11 @@ public class ListViewAdapter extends BaseAdapter {
         if (litpic == null) {
             iv.setImageResource(R.drawable.product_default);
         }else {
-            iv.setBackgroundResource(0);
+//            iv.setBackgroundResource(0);
         }
 
         //下载图片，优先使用本地缓存图片
-        x.image().bind(iv,tempExe(litpic));
+        x.image().bind(iv,litpic);
         return convertView;
     }
 
