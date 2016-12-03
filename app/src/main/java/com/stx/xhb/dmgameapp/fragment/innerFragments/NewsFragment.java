@@ -18,6 +18,7 @@ import android.widget.ListView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.classic.common.MultipleStatusView;
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
@@ -172,6 +173,20 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
         convenientBanner.setCanLoop(true);
         convenientBanner.startTurning(5000);
+
+        convenientBanner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+//                //点击跳转到文章详情界面
+                Bundle bundle = new Bundle();
+                bundle.putString("url", banners.get(position).getUrl());
+                //跳转到文章详情界面
+                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+        });
 
     }
 
