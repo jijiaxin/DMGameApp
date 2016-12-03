@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="160dp"
+        android:layout_height="170dp"
         android:background="@drawable/bg_xiaomai_top"
         android:orientation="vertical">
 
@@ -53,7 +53,9 @@
             android:id="@+id/name_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center"
+            android:textColor="@color/primary_text_color"
             android:text="未登录"
             android:textSize="@dimen/txt_size_first"
             android:layout_below="@id/iv_portrait_unlogin_cover"/>

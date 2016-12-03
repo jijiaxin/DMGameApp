@@ -1,8 +1,6 @@
 package com.stx.xhb.dmgameapp.activities;
 
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -106,14 +104,14 @@ public class SettingActivity extends AppCompatActivity {
                 });
                 break;
             case R.id.setting_iv_heart://评分
-                Uri uri = Uri.parse("http://www.wandoujia.com/apps/com.stx.xhb.dmgameapp");
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+//                Uri uri = Uri.parse("http://www.wandoujia.com/apps/com.stx.xhb.dmgameapp");
+//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
                 break;
             case R.id.setting_iv_about://关于
-                Intent about = new Intent(this, AboutActivity.class);
-                startActivity(about);
+//                Intent about = new Intent(this, AboutActivity.class);
+//                startActivity(about);
                 break;
         }
     }

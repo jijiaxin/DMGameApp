@@ -26,4 +26,8 @@
     <color name="edit_text_color_normal">#0000ff</color>
     <color name="real_transparent">@android:color/transparent</color>
 
+    <color name="primary_text_color">#444444</color> <!--通用字体颜色-->
+    <color name="secondary_text_color">#666666</color> <!--通用字体颜色 二级字体，浅灰-->
+    <color name="third_text_color">#999999</color>
+
 </resources>
