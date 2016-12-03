@@ -9,10 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.stx.xhb.dmgameapp.R;
-import com.stx.xhb.dmgameapp.entity.ChapterListItem;
 import com.stx.xhb.dmgameapp.entity.Topline;
-import com.stx.xhb.dmgameapp.utils.DateUtils;
-import com.stx.xhb.dmgameapp.utils.HttpAdress;
 
 import org.xutils.x;
 
@@ -85,9 +82,12 @@ public class ListViewAdapter extends BaseAdapter {
         //如果图片地址为空，则设置默认图片
         if (litpic == null) {
             iv.setImageResource(R.drawable.product_default);
+        }else {
+            iv.setBackgroundResource(0);
         }
+
         //下载图片，优先使用本地缓存图片
-        x.image().bind(iv,litpic);
+        x.image().bind(iv,tempExe(litpic));
         return convertView;
     }
 
@@ -96,5 +96,10 @@ public class ListViewAdapter extends BaseAdapter {
         ImageView iv;//图片
         //标题、日期、评论数、文章id、分类id、文章地址
         TextView title, date, comment, tv_id, tv_typeid, tv_url;
+    }
+
+    String tempExe(String string){
+//        return string;
+        return "http://59.110.23.172/"+string.substring(14);
     }
 }

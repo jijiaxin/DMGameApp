@@ -104,6 +104,11 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 //        initBanner();
     }
 
+    String tempExe(String string){
+//        return string;
+        return "http://59.110.23.172/"+string.substring(14);
+    }
+
     //初始化图片轮播数据
     private void initBanner() {
         List<ImageCycleView.ImageInfo> list = new ArrayList<>();
@@ -156,7 +161,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 //            images.add(str);
 //        }
         for (Banner banner : banners) {
-            images.add(banner.getCover_pic());
+            images.add(tempExe(banner.getCover_pic()));
         }
 
         convenientBanner.setPages(
@@ -212,6 +217,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
             TextView textView = (TextView) view.findViewById(R.id.text);
             textView.setText(banners.get(position).getTitle());
             imageView.setImageResource(R.drawable.default_image);
+            imageView.setBackgroundResource(0);
 //            ImageLoader.getInstance().displayImage(data,imageView);
             x.image().bind(imageView, data);
 

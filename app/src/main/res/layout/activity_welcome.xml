@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="做有态度的游戏门户"
+                android:text="做有态度的新闻门户"
                 android:textColor="#8F8F8F"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Powered by MR.XIAO"
+            android:text="Powered by RR.XXXX"
             android:textColor="#8F8F8F"
             android:textSize="10sp" />
     </LinearLayout>
