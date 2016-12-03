@@ -57,6 +57,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile 'com.bigkoo:convenientbanner:2.0.5'
 }
 
 

@@ -15,6 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
 import com.classic.common.MultipleStatusView;
 import com.google.gson.Gson;
 import com.stx.xhb.dmgameapp.R;
@@ -49,7 +52,8 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     @Bind(R.id.ptr_layout)
     PtrClassicFrameLayout ptrLayout;
     private View view;
-    private ImageCycleView mImageCycleView;
+//    private ImageCycleView mImageCycleView;
+    ConvenientBanner convenientBanner;
     private ListView news_lv;
     private ListViewAdapter adapter;
     private LayoutInflater mInflater;
@@ -86,7 +90,8 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 
         //添加listview头部控件
         mHeadView = mInflater.inflate(R.layout.banner_view, null);
-        mImageCycleView = (ImageCycleView) mHeadView.findViewById(R.id.icv_topView);
+//        mImageCycleView = (ImageCycleView) mHeadView.findViewById(R.id.icv_topView);
+        convenientBanner = (ConvenientBanner)mHeadView.findViewById(R.id.convenientBanner);
         news_lv.addHeaderView(mHeadView);
         //添加底部控件
         mFootView = mInflater.inflate(R.layout.listview_footer, null);
@@ -103,35 +108,90 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
         for (Banner banner : banners) {
             list.add(new ImageCycleView.ImageInfo(banner.getCover_pic(), banner.getTitle(), banner.getUrl()));
         }
-        mImageCycleView.setOnPageClickListener(new ImageCycleView.OnPageClickListener() {
-            @Override
-            public void onClick(View imageView, ImageCycleView.ImageInfo imageInfo) {
-                //点击跳转到文章详情界面
-                Bundle bundle = new Bundle();
-                bundle.putString("typeid", "2");
-                bundle.putString("id", imageInfo.value.toString());
-                //跳转到文章详情界面
-                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
 
-        mImageCycleView.loadData(list, new ImageCycleView.LoadImageCallBack() {
-            @Override
-            public ImageView loadAndDisplay(ImageCycleView.ImageInfo imageInfo) {
-                //使用BitmapUtils,只能使用网络图片
-                x.view().inject(view);
-                Context context = getContext();
-                ImageView imageView = null;
-                if (context != null) {
-                    imageView = new ImageView(context);
-                    x.image().bind(imageView, imageInfo.image.toString());
-                }
-                return imageView;
-            }
-        });
 
+
+//        mImageCycleView.setOnPageClickListener(new ImageCycleView.OnPageClickListener() {
+//            @Override
+//            public void onClick(View imageView, ImageCycleView.ImageInfo imageInfo) {
+//                //点击跳转到文章详情界面
+//                Bundle bundle = new Bundle();
+//                bundle.putString("typeid", "2");
+//                bundle.putString("id", imageInfo.value.toString());
+//                //跳转到文章详情界面
+//                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//            }
+//        });
+//
+//
+//
+//        mImageCycleView.loadData(list, new ImageCycleView.LoadImageCallBack() {
+//            @Override
+//            public ImageView loadAndDisplay(ImageCycleView.ImageInfo imageInfo) {
+//                x.view().inject(view);
+//                Context context = getContext();
+//                ImageView imageView = null;
+//                if (context != null) {
+//                    imageView = new ImageView(context);
+//                    x.image().bind(imageView, imageInfo.image.toString());
+//                }
+//                return imageView;
+//            }
+//        });
+         String[] imgs = {"http://img2.imgtn.bdimg.com/it/u=3093785514,1341050958&fm=21&gp=0.jpg",
+                "http://img2.3lian.com/2014/f2/37/d/40.jpg",
+                "http://d.3987.com/sqmy_131219/001.jpg",
+                "http://img2.3lian.com/2014/f2/37/d/39.jpg",
+                "http://www.8kmm.com/UploadFiles/2012/8/201208140920132659.jpg",
+                "http://f.hiphotos.baidu.com/image/h%3D200/sign=1478eb74d5a20cf45990f9df460b4b0c/d058ccbf6c81800a5422e5fdb43533fa838b4779.jpg",
+                "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
+        };
+
+
+        List<String> images = new ArrayList<>();
+        for (String str : imgs){
+            images.add(str);
+        }
+//        for (Banner banner : banners) {
+//            images.add(banner.getCover_pic());
+//        }
+
+        convenientBanner.setPages(
+                new CBViewHolderCreator<NetworkImageHolderView>() {
+                    @Override
+                    public NetworkImageHolderView createHolder() {
+                        return new NetworkImageHolderView();
+                    }
+                }, images)
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
+        convenientBanner.setCanLoop(true);
+        convenientBanner.startTurning(5000);
+
+    }
+
+
+    public class NetworkImageHolderView implements Holder<String> {
+        private ImageView imageView;
+        @Override
+        public View createView(Context context) {
+            //你可以通过layout文件来创建，也可以像我一样用代码创建，不一定是Image，任何控件都可以进行翻页
+            imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            return imageView;
+        }
+
+        @Override
+        public void UpdateUI(Context context,int position, String data) {
+            imageView.setImageResource(R.drawable.default_image);
+//            ImageLoader.getInstance().displayImage(data,imageView);
+            x.image().bind(imageView, data);
+
+        }
     }
 
     //下载网络数据

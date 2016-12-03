@@ -2,11 +2,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.stx.xhb.dmgameapp.view.ImageCycleView
-        android:id="@+id/icv_topView"
+    <!--<com.stx.xhb.dmgameapp.view.ImageCycleView-->
+        <!--android:id="@+id/icv_topView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/default_image">-->
+		<!--</com.stx.xhb.dmgameapp.view.ImageCycleView>-->
+
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/default_image">
-		</com.stx.xhb.dmgameapp.view.ImageCycleView>
+        android:layout_height="200dp"
+        app:canLoop="true"
+    />
 
 </RelativeLayout>
