@@ -3,17 +3,15 @@ package com.stx.xhb.dmgameapp;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.stx.xhb.dmgameapp.activities.BaseActivity;
 import com.stx.xhb.dmgameapp.adapter.MainFragmentPageAdapter;
 import com.stx.xhb.dmgameapp.fragment.ArticleFragment;
 import com.stx.xhb.dmgameapp.fragment.MyFragment;
-import com.stx.xhb.dmgameapp.utils.SystemBarTintManager;
 import com.stx.xhb.dmgameapp.view.TipsToast;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -21,7 +19,7 @@ import com.umeng.update.UmengUpdateAgent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseActivity {
     private ViewPager main_viewPager;
     private List<Fragment> fragemnts = new ArrayList<>();
     private MainFragmentPageAdapter adapter;
@@ -36,7 +34,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         UmengUpdateAgent.setUpdateOnlyWifi(false);
         UmengUpdateAgent.update(this);
-        initWindow();
         initView();
         initData();
         setAdapter();
@@ -47,19 +44,6 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-    }
-
-    //初始化窗体布局
-    private void initWindow() {
-        SystemBarTintManager tintManager;
-        //由于沉浸式状态栏需要在Android4.4.4以上才能使用
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorBackground));
-            tintManager.setStatusBarTintEnabled(true);
-        }
     }
 
     //初始化控件

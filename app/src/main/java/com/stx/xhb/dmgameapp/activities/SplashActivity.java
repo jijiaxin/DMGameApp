@@ -1,9 +1,12 @@
 package com.stx.xhb.dmgameapp.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.stx.xhb.dmgameapp.MainActivity;
@@ -14,7 +17,7 @@ import com.umeng.analytics.MobclickAgent;
 /**
  * 启动页
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends FragmentActivity {
     //private SplashAD splashAD;
     private LinearLayout ll_ad;
 
@@ -30,14 +33,26 @@ public class SplashActivity extends BaseActivity {
         super.onResume();
         MobclickAgent.onPause(this);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initWindow();
         setContentView(R.layout.activity_welcome);
         ll_ad = (LinearLayout) findViewById(R.id.ll_ad);
         getChannelInfo();
         jumpToMain();
     }
+
+    //初始化窗体布局
+    private void initWindow() {
+        //设置透明状态栏
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
+
     //@Override
     public void onADDismissed() {
         jumpToMain();
@@ -79,7 +94,7 @@ public class SplashActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    private void getChannelInfo(){
+    private void getChannelInfo() {
         ChannelUtils channelUtils = new ChannelUtils(this);
         channelUtils.getChannelInfoNet();
     }
