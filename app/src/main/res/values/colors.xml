@@ -24,4 +24,6 @@
     <color name="list_side">#ffd5d5d5</color>
     <color name="edit_text_color_pre">#ff0000</color>
     <color name="edit_text_color_normal">#0000ff</color>
+    <color name="real_transparent">@android:color/transparent</color>
+
 </resources>

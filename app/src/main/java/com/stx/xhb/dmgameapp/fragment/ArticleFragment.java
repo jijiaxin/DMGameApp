@@ -18,8 +18,8 @@ import com.stx.xhb.dmgameapp.entity.Channel;
 import com.stx.xhb.dmgameapp.fragment.innerFragments.CommondFragment;
 import com.stx.xhb.dmgameapp.fragment.innerFragments.NewsFragment;
 import com.stx.xhb.dmgameapp.utils.ChannelUtils;
+import com.stx.xhb.dmgameapp.view.PagerSlidingTabStrip;
 import com.stx.xhb.dmgameapp.view.TipsToast;
-import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class ArticleFragment extends Fragment {
     private String[] TITLE = null;
     private View view;
     private ViewPager article_viewpager;
-    private TabPageIndicator indicator;
+    private PagerSlidingTabStrip indicator;
     private TabPageIndicatorAdapter adapter;
     //fragment的集合
     private List<Fragment> fragments = new ArrayList<>();
@@ -59,7 +59,7 @@ public class ArticleFragment extends Fragment {
         tv_title.setText("文章");
         article_viewpager = (ViewPager) view.findViewById(R.id.article_viewpager);
         //实例化TabPageIndicator然后设置ViewPager与之关联
-        indicator = (TabPageIndicator) view.findViewById(R.id.article_indicator);
+        indicator = (PagerSlidingTabStrip) view.findViewById(R.id.article_indicator);
 
     }
 
@@ -70,10 +70,10 @@ public class ArticleFragment extends Fragment {
         fragments.add(newsFragment);
         ChannelUtils channelUtils = new ChannelUtils(getActivity());
         List<Channel> channels = channelUtils.getChannelInfoCache();
-        if (channels != null && channels.size() > 0){
+        if (channels != null && channels.size() > 0) {
 
-        }else{
-            TipsToast.makeText(getActivity(),"数据错误，请重启APP", TipsToast.LENGTH_LONG).show();
+        } else {
+            TipsToast.makeText(getActivity(), "数据错误，请重启APP", TipsToast.LENGTH_LONG).show();
             getActivity().finish();
             return;
         }
@@ -94,7 +94,8 @@ public class ArticleFragment extends Fragment {
         adapter = new TabPageIndicatorAdapter(getFragmentManager(), fragments, TITLE);
         //设置适配器
         article_viewpager.setAdapter(adapter);
-        indicator.setViewPager(article_viewpager, 0);
+        article_viewpager.setCurrentItem(0);
+        indicator.setViewPager(article_viewpager);
     }
 
     //设置监听
@@ -112,7 +113,7 @@ public class ArticleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //跳转到个人设置界面
-                Intent intent=new Intent(getActivity(), SettingActivity.class);
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
             }
         });
