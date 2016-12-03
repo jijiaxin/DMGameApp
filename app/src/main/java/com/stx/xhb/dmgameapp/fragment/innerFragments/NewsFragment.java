@@ -67,6 +67,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     private boolean isBottom;//是否到底部的标记
     private boolean isLoadData = false;//判断是否已经在加载数据
     private String url;
+    private boolean bannerDone = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -208,7 +209,6 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
                 Toutiao toutiao = new Gson().fromJson(json, Toutiao.class);
                 chapterListItems = toutiao.getData();
                 banners = toutiao.getMeta().getPhotos();
-                initBanner();
                 if (page == 1) {
                     data.clear();
                 }
@@ -217,6 +217,10 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
                 }
                 data.addAll(chapterListItems);
                 ptrLayout.refreshComplete();
+                if (!bannerDone) {
+                    bannerDone = true;
+                    initBanner();
+                }
             }
 
             @Override

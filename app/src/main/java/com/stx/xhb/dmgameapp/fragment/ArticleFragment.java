@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class ArticleFragment extends Fragment {
     //标题
-    private String[] TITLE = null;
+    private String[] TITLE = {"头条"};
     private View view;
     private ViewPager article_viewpager;
     private PagerSlidingTabStrip indicator;
