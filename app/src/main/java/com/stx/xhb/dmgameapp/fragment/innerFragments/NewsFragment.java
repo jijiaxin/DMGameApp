@@ -14,6 +14,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -193,16 +194,23 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 
     public class NetworkImageHolderView implements Holder<String> {
         private ImageView imageView;
+        private TextView  textView;
+        View view;
         @Override
         public View createView(Context context) {
             //你可以通过layout文件来创建，也可以像我一样用代码创建，不一定是Image，任何控件都可以进行翻页
-            imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            return imageView;
+//            imageView = new ImageView(context);
+//            TextView = new TextView(context);
+//            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            view = mInflater.inflate(R.layout.item_banner, null);
+            return view;
         }
 
         @Override
         public void UpdateUI(Context context,int position, String data) {
+            ImageView imageView = (ImageView)view.findViewById(R.id.image) ;
+            TextView textView = (TextView)view.findViewById(R.id.text) ;
+            textView.setText(banners.get(position).getTitle());
             imageView.setImageResource(R.drawable.default_image);
 //            ImageLoader.getInstance().displayImage(data,imageView);
             x.image().bind(imageView, data);
