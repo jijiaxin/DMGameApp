@@ -13,7 +13,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="170dp"
+        android:layout_height="180dp"
         android:background="@drawable/bg_xiaomai_top"
         android:orientation="vertical">
 
@@ -49,47 +49,161 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
             android:src="@drawable/icon_unlogin" />
+
         <TextView
             android:id="@+id/name_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_below="@id/iv_portrait_unlogin_cover"
+            android:layout_marginTop="15dp"
             android:gravity="center"
-            android:textColor="@color/primary_text_color"
             android:text="未登录"
-            android:textSize="@dimen/txt_size_first"
-            android:layout_below="@id/iv_portrait_unlogin_cover"/>
+            android:textColor="@color/primary_text_color"
+            android:textSize="@dimen/txt_size_first" />
     </RelativeLayout>
 
     <!--<LinearLayout-->
-        <!--android:id="@+id/linear_myreg"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:padding="8dp">-->
+    <!--android:id="@+id/linear_myreg"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:padding="8dp">-->
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="游戏类型："-->
-            <!--android:textSize="15sp" />-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="游戏类型："-->
+    <!--android:textSize="15sp" />-->
 
-        <!--<Spinner-->
-            <!--android:id="@+id/game_spinner"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:background="@drawable/edittext1"-->
-            <!--android:spinnerMode="dialog"/>-->
+    <!--<Spinner-->
+    <!--android:id="@+id/game_spinner"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="40dp"-->
+    <!--android:background="@drawable/edittext1"-->
+    <!--android:spinnerMode="dialog"/>-->
     <!--</LinearLayout>-->
 
     <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0.5dp"-->
-        <!--android:background="@android:color/darker_gray"/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0.5dp"-->
+    <!--android:background="@android:color/darker_gray"/>-->
+
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <RelativeLayout
+            android:id="@+id/setting_iv_clearCache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_trans_divider"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="清除缓存"
+                android:textColor="@color/primary_text_color"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/app_ic_goto" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/blue_divider_line" />
+
+        <RelativeLayout
+            android:id="@+id/setting_iv_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_trans_divider"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="检查更新"
+                android:textColor="@color/primary_text_color"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/app_ic_goto" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/blue_divider_line" />
+
+        <RelativeLayout
+            android:id="@+id/setting_iv_heart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_trans_divider"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="给我评分"
+                android:textColor="@color/primary_text_color"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/app_ic_goto" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/blue_divider_line" />
+
+        <RelativeLayout
+            android:id="@+id/setting_iv_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_trans_divider"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="关于"
+                android:textColor="@color/primary_text_color"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/app_ic_goto" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/blue_divider_line" />
     </LinearLayout>
 </LinearLayout>
