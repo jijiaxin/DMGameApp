@@ -24,15 +24,17 @@ import com.stx.xhb.dmgameapp.entity.Banner;
 import com.stx.xhb.dmgameapp.entity.Topline;
 import com.stx.xhb.dmgameapp.entity.Toutiao;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
-import com.stx.xhb.dmgameapp.utils.JsonUtils;
 import com.stx.xhb.dmgameapp.utils.NetConnectedUtils;
 import com.stx.xhb.dmgameapp.utils.ToastUtil;
 import com.stx.xhb.dmgameapp.view.ImageCycleView;
+
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -98,7 +100,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
     private void initBanner() {
         List<ImageCycleView.ImageInfo> list = new ArrayList<>();
         //使用网络加载数据，最后一个参数为图片新闻的id
-        for (Banner banner : banners){
+        for (Banner banner : banners) {
             list.add(new ImageCycleView.ImageInfo(banner.getCover_pic(), banner.getTitle(), banner.getUrl()));
         }
         mImageCycleView.setOnPageClickListener(new ImageCycleView.OnPageClickListener() {
@@ -143,14 +145,14 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
             public void onSuccess(String result) {
                 multiplestatusview.showContent();
                 String json = new String(result);
-                Toutiao toutiao = new Gson().fromJson(json,Toutiao.class);
+                Toutiao toutiao = new Gson().fromJson(json, Toutiao.class);
                 chapterListItems = toutiao.getData();
                 banners = toutiao.getMeta().getPhotos();
                 initBanner();
                 if (page == 1) {
                     data.clear();
                 }
-                if (chapterListItems.isEmpty()){
+                if (chapterListItems.isEmpty()) {
                     multiplestatusview.showEmpty();
                 }
                 data.addAll(chapterListItems);
@@ -159,9 +161,9 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                if (NetConnectedUtils.isConnected(getActivity())){
+                if (NetConnectedUtils.isConnected(getActivity())) {
                     multiplestatusview.showError();
-                }else {
+                } else {
                     multiplestatusview.showNoNetwork();
                 }
             }
@@ -219,7 +221,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
         Bundle bundle = new Bundle();
         ///////////此处减-1是因为在listview头部添加了一个viewpager，
         // 造成所有listview的条目的位置都往下移了一个
-        bundle.putString("url", data.get(position-1).getUrl());
+        bundle.putString("url", data.get(position - 1).getUrl());
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -251,7 +253,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 
                 @Override
                 public void onError(Throwable ex, boolean isOnCallback) {
-                    ToastUtil.showShort(getActivity(),"加载失败");
+                    ToastUtil.showShort(getActivity(), "加载失败");
                 }
 
                 @Override
@@ -279,6 +281,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
     private void setSwipeRefreshInfo() {
         ptrLayout.setPtrHandler(new PtrHandler() {
             @Override
@@ -288,7 +291,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 
             @Override
             public void onRefreshBegin(in.srain.cube.views.ptr.PtrFrameLayout frame) {
-                   downloadData(1);
+                downloadData(1);
             }
         });
         ptrLayout.setLastUpdateTimeRelateObject(this);//设置是否显示上次更新时间
@@ -297,6 +300,7 @@ public class NewsFragment extends Fragment implements AdapterView.OnItemClickLis
 
     /**
      * 判断是否滑动到顶端
+     *
      * @return
      */
     public boolean canChildScrollUp() {

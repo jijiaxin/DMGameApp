@@ -23,6 +23,7 @@ import com.stx.xhb.dmgameapp.entity.Toutiao;
 import com.stx.xhb.dmgameapp.utils.HttpAdress;
 import com.stx.xhb.dmgameapp.utils.NetConnectedUtils;
 import com.stx.xhb.dmgameapp.utils.ToastUtil;
+import com.umeng.socialize.utils.Log;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -85,7 +86,7 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
         //获取到文章分类id
         typeid = getArguments().getInt("typeid");
         //网络请求地址
-        url = String.format(HttpAdress.ARTICLE_URL, typeid, currenPage);
+        url = String.format(HttpAdress.OTHER_LIST_URL, typeid, currenPage);
         //实例化Adapter
         adapter = new ListViewAdapter(getActivity(), chapterListItems);
         //给listview绑定适配器
@@ -96,11 +97,13 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
     //加载网络数据
     private void downloadData(final int page) {
         //网络请求地址
-        String strUrl = String.format(HttpAdress.OTHER_LIST_URL, page);
+        String strUrl = String.format(HttpAdress.OTHER_LIST_URL,typeid, page);
+        Log.e("jijiaxin",strUrl);
         multiplestatusview.showLoading();
         x.http().get(new RequestParams(strUrl), new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Log.e("jijiaxin",result);
                 multiplestatusview.showContent();
                 String json = new String(result);
                 //解析json数据
@@ -189,7 +192,7 @@ public class CommondFragment extends Fragment implements AdapterView.OnItemClick
             //开始加载数据
             isLoadData = true;//将加载新数据的标记设置为true
             //网络请求地址
-            url = String.format(HttpAdress.OTHER_LIST_URL, currenPage);
+            url = String.format(HttpAdress.OTHER_LIST_URL, typeid,currenPage);
             x.http().get(new RequestParams(url), new Callback.CommonCallback<String>() {
                 @Override
                 public void onSuccess(String result) {

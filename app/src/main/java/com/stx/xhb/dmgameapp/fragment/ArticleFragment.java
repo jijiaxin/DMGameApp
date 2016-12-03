@@ -77,9 +77,10 @@ public class ArticleFragment extends Fragment {
             getActivity().finish();
             return;
         }
-        TITLE = new String[channels.size()];
+        TITLE = new String[channels.size()+1];
+        TITLE[0] = "头条";
         for (int i = 0; i < channels.size(); i++) {
-            TITLE[i] = channels.get(i).getName();
+            TITLE[i+1] = channels.get(i).getName();
             CommondFragment fragment = new CommondFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("typeid", channels.get(i).getId());

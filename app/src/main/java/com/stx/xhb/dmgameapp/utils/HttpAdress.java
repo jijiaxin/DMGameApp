@@ -41,7 +41,7 @@ public class HttpAdress {
     //头条
     public static final String TOPLINE_URL = "http://59.110.23.172/api/sort_links/with_photos?page=%s";
     //其他频道
-    public static final String OTHER_LIST_URL = "http://59.110.23.172/api/articles/channel/%S";
+    public static final String OTHER_LIST_URL = "http://59.110.23.172/api/articles/channel/%s?page=%s";
 
 
     /*
