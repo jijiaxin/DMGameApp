@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/text"
-        android:textColor="@color/colorGray"
+        android:textColor="@android:color/white"
         android:layout_marginLeft="14dp"
         android:layout_marginBottom="5dp"
         android:textSize="12sp"
