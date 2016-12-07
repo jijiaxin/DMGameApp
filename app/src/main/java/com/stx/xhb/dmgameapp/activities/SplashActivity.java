@@ -7,12 +7,28 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.stx.xhb.dmgameapp.MainActivity;
 import com.stx.xhb.dmgameapp.R;
+import com.stx.xhb.dmgameapp.entity.LoadingPhoto;
 import com.stx.xhb.dmgameapp.utils.ChannelUtils;
+import com.stx.xhb.dmgameapp.utils.HttpAdress;
+import com.stx.xhb.dmgameapp.utils.RecordUtils;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.utils.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.util.ArrayList;
 
 /**
  * 启动页
@@ -20,7 +36,9 @@ import com.umeng.analytics.MobclickAgent;
 public class SplashActivity extends FragmentActivity {
     //private SplashAD splashAD;
     private LinearLayout ll_ad;
+    private ImageView loadingView;
 
+    boolean isFirstIn = false;
     @Override
     protected void onPause() {
         super.onPause();
@@ -40,14 +58,28 @@ public class SplashActivity extends FragmentActivity {
         initWindow();
         setContentView(R.layout.activity_welcome);
         ll_ad = (LinearLayout) findViewById(R.id.ll_ad);
+        loadingView = (ImageView) findViewById(R.id.loading_view);
+        loadData();
         getChannelInfo();
-        jumpToMain();
+        initFlow();
+//        jumpToMain();
+    }
+
+    private void initFlow() {
+        isFirstIn = RecordUtils.getHasIn(this);
+        Log.e("jijiaxin",isFirstIn+"");
+        if(!isFirstIn){
+            RecordUtils.saveHasIn(this,true);
+            jumpToGuide();
+        }else {
+            jumpToMain();
+        }
     }
 
     //初始化窗体布局
     private void initWindow() {
         //设置透明状态栏
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
@@ -67,7 +99,19 @@ public class SplashActivity extends FragmentActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 1000);//设定睡眠时间1000ms
+        }, 1500);//设定睡眠时间1000ms
+    }
+
+    private void jumpToGuide() {
+        //使用Handler发送一个延迟1000ms的消息
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashActivity.this, GuideActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 1500);//设定睡眠时间1000ms
     }
 
     //@Override
@@ -97,5 +141,47 @@ public class SplashActivity extends FragmentActivity {
     private void getChannelInfo() {
         ChannelUtils channelUtils = new ChannelUtils(this);
         channelUtils.getChannelInfoNet();
+    }
+
+    private void loadData() {
+        x.http().get(new RequestParams(HttpAdress.LODDING_PHOTO_URL), new Callback.CommonCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+                LogUtil.e(result);
+                if (result != null) {
+                    try {
+                        JSONObject resultObj = new JSONObject(result);
+                        JSONArray jsonArray = resultObj.getJSONArray("data");
+                        ArrayList<LoadingPhoto> photos = new Gson().fromJson(jsonArray.toString(), new TypeToken<ArrayList<LoadingPhoto>>() {
+                        }.getType());
+                        String url = photos.get(0).path;
+
+                        x.image().bind(loadingView, url);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                LogUtil.e("onError");
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                LogUtil.e("onCancelled");
+
+            }
+
+            @Override
+            public void onFinished() {
+                LogUtil.e("onFinished");
+
+            }
+        });
+
     }
 }
